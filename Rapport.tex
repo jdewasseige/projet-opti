@@ -29,4 +29,15 @@ Soient
 
 minimiser $\sum_{i=1}^{T} c_m \cdot x_{i,n} + (c_m + h_b (s_{hs} - s_{hm})) \cdot x_{i,sim} + c_s \cdot x_{i,stock} + c_r \cdot x_{i,r} + c_{sst} \cdot x_{i,sst} $
 
+\subsection*{Contraintes}
+
+$x_{i,stock} = x_{i-1,stock} + x_{i,n} + x_{i,sup} + x_{i,r} + x_{i,sst} - demande(i), \forall i$ \\
+$x_{0, stock} = stock-initial$ \\
+$x_{T, stock} = x_{0, stock}$ \\
+$x_{i,n} \leq \frac{n_{empl0} \cdot 35}{h_b}$ \\
+$x_{i,sup} \leq \frac{n_{empl0} \cdot h_{ss}}{h_{b}}$ \\
+$x_i \geq 0, \forall i$ \\
+
+
+
 \end{document}
