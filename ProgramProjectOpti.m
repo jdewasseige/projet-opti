@@ -1,10 +1,8 @@
 %Importation des données
 d = importdata('donnees.mat');
-emplDepart = 30;
+emplDepart = 30; % Arbitraire car pas dans les données
 
 %Création du vecteur objectif (f)
-%Probléme = Il faut dire que les smartphones livrés en retard doivent quand
-%même être produits
 a = [d.cout_materiaux d.cout_materiaux+d.duree_assemblage/60*d.cout_heure_sup d.cout_stockage d.cout_retard d.cout_sous_traitant];
 f = a;
 for i = 1:d.T-1
@@ -27,16 +25,30 @@ beq(d.T) = 0;
 %full(Aeq)
 
 %Matrice des contraintes d'inégalité
-A = sparse(2*d.T, d.T*length(a));
-b = zeros(1,2*d.T);
+A = sparse(3*d.T, d.T*length(a));
+b = zeros(1,3*d.T);
+%Contrainte sur le nombre max d'employés et donc d'heures 'normales'
 for i = 1:d.T
     A(i, (length(a)*(i-1)+1)) = 1;
     b(1,i) = ((d.duree_assemblage/60)*35)/emplDepart;
 end
+%Contrainte sur le nombre max d'heures sup
 for i = d.T+1:2*d.T
     A(i, (length(a)*(i-d.T-1)+2)) = 1;
     b(1,i) = (d.duree_assemblage/60*d.nb_max_heure_sup)/emplDepart;
 end
+%Ajoute l'inegalite x(i-1,r) <= x(i,n) + x(i,sup) + x(i,sst)
+%qui dit que l'on doit quand meme produire les sp que l'on rend en retard
+for i = 2*d.T+1:3*d.T
+    if i ~= 2*d.T+1 %La première semaine, pas encore de sp en retard
+    A(i, (length(a)*(i-2*d.T-1)-1)) = 1;
+    end
+    A(i, ((length(a)*(i-2*d.T-1)+1)):((length(a)*(i-2*d.T-1)+5))) = [-1 -1 0 0 -1];
+    b(1,i) = 0;
+end
+full(A)
+    
+
 
 %intlinprog(f,1:length(f),A,b,Aeq,beq,zeros(length(f)),[])
-linprog(f,A,b,Aeq,beq,zeros(size(f)),[])
+reshape(linprog(f,A,b,Aeq,beq,zeros(size(f)),[]),5,15)'
