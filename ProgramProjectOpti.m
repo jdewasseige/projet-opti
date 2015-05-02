@@ -1,6 +1,11 @@
 %Importation des données
 d = importdata('donnees.mat');
 emplDepart = 30; % Arbitraire car pas dans les données
+%Remise des données sous la forme stock-initial;demande;stockfinal pour
+%faciliter la programmation. On ajoute donc deux semaines qui correspondent
+%à la semaine 0 qui ne contient que le stock initial, et la semaine T+1 qui contient le stock final.
+d.demande = [d.stock_initial d.demande d.stock_initial];
+d.T = d.T+2;
 
 %Création du vecteur objectif (f)
 a = [d.cout_materiaux d.cout_materiaux+d.duree_assemblage/60*d.cout_heure_sup d.cout_stockage d.cout_retard d.cout_sous_traitant];
@@ -12,6 +17,8 @@ end
 %Matrice des contraintes d'égalité
 Aeq = sparse(d.T, d.T*length(a));
 beq = zeros(1,d.T);
+beq(1) = d.demande(1);
+beq(d.T) = d.demande(d.T);
 for i = 2:d.T-1
     Aeq(i,(1+length(a)*(i-1)):(length(a)*(i-1)+5)) = [1 1 -1 1 1];
     Aeq(i,length(a)*(i-2)+3) = 1;
@@ -20,8 +27,6 @@ for i = 2:d.T-1
 end
 Aeq(1,3) = 1;
 Aeq(d.T,(length(a)*d.T-2)) = 1;
-beq(1) = 0;
-beq(d.T) = 0;
 %full(Aeq)
 
 %Matrice des contraintes d'inégalité
@@ -50,4 +55,4 @@ end
 
 
 %intlinprog(f,1:length(f),A,b,Aeq,beq,zeros(length(f)),[])
-reshape(linprog(f,A,b,Aeq,beq,zeros(size(f)),[]),5,15)'
+reshape(linprog(f,A,b,Aeq,beq,zeros(size(f)),[]),5,17)'
