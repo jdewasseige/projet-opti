@@ -30,12 +30,12 @@ b = zeros(1,3*d.T);
 %Contrainte sur le nombre max d'employés et donc d'heures 'normales'
 for i = 1:d.T
     A(i, (length(a)*(i-1)+1)) = 1;
-    b(1,i) = ((d.duree_assemblage/60)*35)/emplDepart;
+    b(1,i) = (emplDepart*35)/(d.duree_assemblage/60);
 end
 %Contrainte sur le nombre max d'heures sup
 for i = d.T+1:2*d.T
     A(i, (length(a)*(i-d.T-1)+2)) = 1;
-    b(1,i) = (d.duree_assemblage/60*d.nb_max_heure_sup)/emplDepart;
+    b(1,i) = (emplDepart*d.nb_max_heure_sup)/(d.duree_assemblage/60);
 end
 %Ajoute l'inegalite x(i-1,r) <= x(i,n) + x(i,sup) + x(i,sst)
 %qui dit que l'on doit quand meme produire les sp que l'on rend en retard
@@ -46,7 +46,6 @@ for i = 2*d.T+1:3*d.T
     A(i, ((length(a)*(i-2*d.T-1)+1)):((length(a)*(i-2*d.T-1)+5))) = [-1 -1 0 0 -1];
     b(1,i) = 0;
 end
-full(A)
     
 
 
