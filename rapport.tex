@@ -59,6 +59,7 @@ avec la caractéristique $\lambda$.
 \subsection*{Contraintes}
 Voici les contraintes du problème de la planification 
 de la ligne d’assemblage à personnel constant.
+On pose que $\Delta x_{s,\lambda} = x_{s,\lambda} - x_{s-1,\lambda}$.
 \begin{align*}
   \Delta\xstock + \texttts{demande}(s) &= \xn + \xsup 
   + \xretard + \xsst - \myX{s-1}{retard} &\forall s \\
@@ -74,17 +75,11 @@ de la ligne d’assemblage à personnel constant.
   x_s &\geq 0 &\forall s
 \end{align*}
 
-Avec
-\begin{align*}
-  \Delta x_{s,\lambda} &= x_{s,\lambda} - x_{s-1,\lambda} \\
-  d_{a,h} &= \texttts{duree\_assemblage}/60.
-\end{align*}
-
 \subsection*{Fonction objectif}
 \[
   \mbox{minimiser } 
   \sum_{s=1}^{T} 
-  c_m\, \xn + \left(c_m + \frac{d_{a}}{60} \, c_{hs} \right) \xsup
+  c_m\, \xn + (c_m + d_{a,h} \, c_{hs})\, \xsup
   + c_s\, \xstock + c_r\, \xretard + c_{sst}\, \xsst
 \]
 Le tableau~\ref{tab:constantesQuestion1} contient les abréviations
@@ -106,7 +101,7 @@ des constantes utilisées.
     \hline
     $c_{sst}$ & \texttt{cout\_sous\_traitant} \\
     \hline
-    $d_a$ & \texttt{duree\_assemblage} \\
+    $d_{a,h}$ & \texttt{duree\_assemblage}/60 \\
     \hline
   \end{tabular}
   \caption{Constantes de la modélisation de la ligne d'assemblage.}
