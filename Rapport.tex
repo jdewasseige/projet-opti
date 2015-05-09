@@ -1,12 +1,10 @@
-\documentclass{article}
-\usepackage[utf8]{inputenc}
+\documentclass[12pt,oneside,a4paper]{article}
+
+\usepackage{custom}
 
 \title{Projet d'optimisation}
 \author{Groupe 1}
-\date{April 2015}
-
-\usepackage{natbib}
-\usepackage{graphicx}
+\date{\today}
 
 \begin{document}
 
@@ -15,28 +13,54 @@
 \section{Question 1}
 
 \subsection*{Variables}
-Soient 
-\begin{itemize}
-\item $x_{i,n}$ le nombre de smartphones produits dans l'entreprise durant la semaine i par des ouvriers payés au salaire normal
-\item $x_{i,sup}$ le nombre de smartphones produits par l'entreprise durant la semaine i par des ouvriers payés au salaire des heures supplémentaires
 
-\item $x_{i,stock}$ le nombre de smartphones conservés en stock pendant la semaine i
-\item $x_{i,r}$ le nombre de smartphones commandés pour la semaine i qui seront vendus une semaine en retard
-\item $x_{i,sst}$ le nombre de smartphones sous traités à la semaine i
-\end{itemize}
+Le tableau~\ref{tab:variablesQuestion1} contient les différentes variables $x_{i,\lambda}$
+qui correspondent au nombre de smartphones pour chaque semaine $i$
+avec la caractéristique $\lambda$.
+ 
+\begin{table}
+  \begin{center}
+  \begin{tabular}{|c|l|}
+    \hline
+    Variable & Caractéristiques des smartphones \\
+    \hline
+    \hline
+    $x_{i,n}$ & Produits par des ouvriers payés au \emph{salaire normal}. \\
+    \hline
+    $x_{i,sup}$ & Produits par des ouvriers payés avec des \emph{heures supplémentaires}. \\
+    \hline
+    $x_{i,\text{stock}}$ & Conservés en \emph{stock}. \\
+    \hline
+    $x_{i,r}$ & Vendus une semaine en \emph{retard}. \\
+    \hline
+    $x_{i,\text{sst}}$ & Sous-traités. \\
+    \hline
+  \end{tabular}
+  \caption{Variables de la modélisation de la ligne d'assemblage.}
+  \label{tab:variablesQuestion1}
+  \end{center}
+\end{table}
 
 \subsection*{Objectif}
-
-minimiser $\sum_{i=1}^{T} c_m \cdot x_{i,n} + (c_m + h_b (s_{hs} - s_{hm})) \cdot x_{i,sim} + c_s \cdot x_{i,stock} + c_r \cdot x_{i,r} + c_{sst} \cdot x_{i,sst} $
+Les paramètres ... représentent...
+\[
+  \mbox{minimiser } 
+  \sum_{i=1}^{T} c_m\, x_{i,n} + (c_m + h_b (s_{hs} - s_{hm}))\, x_{i,sim}
+  + c_s\, x_{i,\text{stock}} + c_r\, x_{i,r} + c_{sst}\, x_{i,\text{sst}}
+\]
 
 \subsection*{Contraintes}
 
-$x_{i,stock} = x_{i-1,stock} + x_{i,n} + x_{i,sup} + x_{i,r} + x_{i,sst} - demande(i), \forall i$ \\
-$x_{0, stock} = stock-initial$ \\
-$x_{T, stock} = x_{0, stock}$ \\
-$x_{i,n} \leq \frac{n_{empl0} \cdot 35}{h_b}$ \\
-$x_{i,sup} \leq \frac{n_{empl0} \cdot h_{ss}}{h_{b}}$ \\
-$x_i \geq 0, \forall i$ \\
+\begin{align*}
+  x_{i,\text{stock}} &= x_{i-1,\text{stock}} + x_{i,n} + x_{i,\text{sup}} 
+  + x_{i,r} + x_{i,\text{sst}} - \texttt{demande}(i) \qquad \forall i \\
+  x_{0,\text{stock}} &= \texttt{stock-initial} \\
+  x_{T,\text{stock}} &= x_{0,\text{stock}} \\
+  x_{i,n} &\leq \frac{n_{\text{empl0}} \cdot 35}{h_b} \\
+  x_{i,\text{sup}} &\leq \frac{n_{\text{empl0}} \cdot h_{ss}}{h_{b}} \\
+  x_i &\geq 0 \qquad \forall i \\
+\end{align*}
+
 
 
 
