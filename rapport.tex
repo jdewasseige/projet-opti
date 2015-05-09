@@ -2,6 +2,20 @@
 
 \usepackage{custom}
 
+\newcommand{\question}
+{
+\addtocounter{section}{1}
+\section*{Question \thesection}
+}
+
+\newcommand{\myX}[2]{x_{#1,\text{#2}}}
+\newcommand{\xSemaine}[1]{\myX{s}{#1}}
+\newcommand{\xn}{\xSemaine{n}}
+\newcommand{\xsup}{\xSemaine{sup}}
+\newcommand{\xstock}{\xSemaine{stock}}
+\newcommand{\xretard}{\xSemaine{retard}}
+\newcommand{\xsst}{\xSemaine{sst}}
+
 \title{Projet d'optimisation}
 \author{Groupe 1}
 \date{\today}
@@ -10,29 +24,29 @@
 
 \maketitle
 
-\section{Question 1}
+\question %1
 
 \subsection*{Variables}
-Le tableau~\ref{tab:variablesQuestion1} contient les différentes variables $x_{i,\lambda}$
-qui correspondent au nombre de smartphones pour chaque semaine $i$
+Le tableau~\ref{tab:variablesQuestion1} contient les différentes variables $x_{s,\lambda}$
+qui correspondent au nombre de smartphones pour chaque semaine $s$
 avec la caractéristique $\lambda$.
  
-\begin{table}
+\begin{table}[h]
   \begin{center}
   \begin{tabular}{|c|l|}
     \hline
     Variable & Caractéristiques des smartphones \\
     \hline
     \hline
-    $x_{i,n}$ & Produits par des ouvriers payés au \emph{salaire normal}. \\
+    $\xn$ & Produits au \emph{salaire normal}. \\
     \hline
-    $x_{i,sup}$ & Produits par des ouvriers payés avec des \emph{heures supplémentaires}. \\
+    $\xsup$ & Produits pendant les \emph{heures supplémentaires}. \\
     \hline
-    $x_{i,\text{stock}}$ & Conservés en \emph{stock}. \\
+    $\xstock$ & Conservés en \emph{stock}. \\
     \hline
-    $x_{i,r}$ & Vendus une semaine en \emph{retard}. \\
+    $\xretard$ & Vendus une semaine en \emph{retard}. \\
     \hline
-    $x_{i,\text{sst}}$ & Sous-traités. \\
+    $\xsst$ & Sous-traités. \\
     \hline
   \end{tabular}
   \caption{Variables de la modélisation de la ligne d'assemblage.}
@@ -40,25 +54,81 @@ avec la caractéristique $\lambda$.
   \end{center}
 \end{table}
 
-\subsection*{Objectif}
-Les paramètres ... représentent...
+\subsection*{Contraintes}
+Voici les contraintes du problème de la planification 
+de la ligne d’assemblage à personnel constant.
+\begin{align*}
+  \xstock &= \myX{s-1}{stock} + \xn + \xsup 
+  + \xretard + \xsst - \myX{s-1}{r} - \texttt{demande}(s) \qquad \forall s \\
+  \myX{0}{stock} &= \texttt{stock-initial} \\
+  \myX{T}{stock} &= \myX{0}{stock} \\
+  \xn &\leq \frac{n_{\text{empl0}} \cdot 35}{h_b} \\
+  \xsup &\leq \frac{n_{\text{empl0}} \cdot h_{ss}}{h_{b}} \\
+  \xsst &\leq \texttt{nb\_max\_sous\_traitant} \qquad \forall s \\
+  x_s &\geq 0 \qquad \forall s \\
+\end{align*}
+
+\begin{table}[h]
+  \begin{center}
+  \begin{tabular}{|c|l|}
+    \hline
+    Paramètre & Constante représentée \\
+    \hline
+    \hline
+    $c_m$ & \texttt{cout\_materiaux} \\
+    \hline
+    $c_{hs}$ & \texttt{cout\_heure\_sup} \\
+    \hline
+    $c_s$ & \texttt{cout\_stockage} \\
+    \hline
+    $c_r$ & \texttt{cout\_retard} \\
+    \hline
+    $c_{sst}$ & \texttt{cout\_sous\_traitant} \\
+    \hline
+    $d_a$ & \texttt{duree\_assemblage} \\
+    \hline
+  \end{tabular}
+  \caption{Constantes de la modélisation de la ligne d'assemblage.}
+  \label{tab:constantesQuestion1}
+  \end{center}
+\end{table}
+
+\subsection*{Fonction objectif}
 \[
   \mbox{minimiser } 
-  \sum_{i=1}^{T} c_m\, x_{i,n} + (c_m + h_b (s_{hs} - s_{hm}))\, x_{i,sim}
-  + c_s\, x_{i,\text{stock}} + c_r\, x_{i,r} + c_{sst}\, x_{i,\text{sst}}
+  \sum_{s=1}^{T} 
+  c_m\, \xn + \left(c_m + \frac{d_{a}}{60} \, c_{hs} \right) \xsup
+  + c_s\, \xstock + c_r\, \xretard + c_{sst}\, \xsst
 \]
 
-\subsection*{Contraintes}
+Le tableau~\ref{tab:constantesQuestion1} contient les abréviations
+des constantes utilisées.
+\begin{table}[h]
+  \begin{center}
+  \begin{tabular}{|c|l|}
+    \hline
+    Paramètre & Constante représentée \\
+    \hline
+    \hline
+    $c_m$ & \texttt{cout\_materiaux} \\
+    \hline
+    $c_{hs}$ & \texttt{cout\_heure\_sup} \\
+    \hline
+    $c_s$ & \texttt{cout\_stockage} \\
+    \hline
+    $c_r$ & \texttt{cout\_retard} \\
+    \hline
+    $c_{sst}$ & \texttt{cout\_sous\_traitant} \\
+    \hline
+    $d_a$ & \texttt{duree\_assemblage} \\
+    \hline
+  \end{tabular}
+  \caption{Constantes de la modélisation de la ligne d'assemblage.}
+  \label{tab:constantesQuestion1}
+  \end{center}
+\end{table}
 
-\begin{align*}
-  x_{i,\text{stock}} &= x_{i-1,\text{stock}} + x_{i,n} + x_{i,\text{sup}} 
-  + x_{i,r} + x_{i,\text{sst}} - x_{i-1,r} - \texttt{demande}(i) \qquad \forall i \\
-  x_{0,\text{stock}} &= \texttt{stock-initial} \\
-  x_{T,\text{stock}} &= x_{0,\text{stock}} \\
-  x_{i,n} &\leq \frac{n_{\text{empl0}} \cdot 35}{h_b} \\
-  x_{i,\text{sup}} &\leq \frac{n_{\text{empl0}} \cdot h_{ss}}{h_{b}} \\
-  x_i &\geq 0 \qquad \forall i \\
-\end{align*}
+\question %2
 
 
 
