@@ -44,7 +44,7 @@ avec la caractéristique $\lambda$.
 Les paramètres ... représentent...
 \[
   \mbox{minimiser } 
-  \sum_{i=1}^{T} c_m\, x_{i,n} + (c_m + h_b (s_{hs} - s_{hm}))\, x_{i,sim}
+  \sum_{i=1}^{T} c_m\, x_{i,n} + (c_m + \frac{d_{a}}{60} \cdot c_{hs} ) \cdot x_{i,sup}
   + c_s\, x_{i,\text{stock}} + c_r\, x_{i,r} + c_{sst}\, x_{i,\text{sst}}
 \]
 
@@ -53,8 +53,9 @@ Les paramètres ... représentent...
 \begin{align*}
   x_{i,\text{stock}} &= x_{i-1,\text{stock}} + x_{i,n} + x_{i,\text{sup}} 
   + x_{i,r} + x_{i,\text{sst}} - x_{i-1,r} - \texttt{demande}(i) \qquad \forall i \\
+  x_{i-1,r} &\leq  x_{i,n} + x_{i,\text{sup}} + x_{i,\text{sst}} \\
   x_{0,\text{stock}} &= \texttt{stock-initial} \\
-  x_{T,\text{stock}} &= x_{0,\text{stock}} \\
+  x_{T,\text{stock}} &= \texttt{stock-initial} \\
   x_{i,n} &\leq \frac{n_{\text{empl0}} \cdot 35}{h_b} \\
   x_{i,\text{sup}} &\leq \frac{n_{\text{empl0}} \cdot h_{ss}}{h_{b}} \\
   x_i &\geq 0 \qquad \forall i \\
