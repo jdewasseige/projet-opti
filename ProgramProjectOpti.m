@@ -1,6 +1,6 @@
 %Importation des données
 d = importdata('donnees.mat');
-emplDepart = 30; % Arbitraire car pas dans les données
+emplDepart = d.nb_ouvriers; 
 %Remise des données sous la forme stock-initial;demande;stockfinal pour
 %faciliter la programmation. On ajoute donc deux semaines qui correspondent
 %à la semaine 0 qui ne contient que le stock initial, et la semaine T+1 qui contient le stock final.
@@ -55,4 +55,15 @@ end
 
 
 %intlinprog(f,1:length(f),A,b,Aeq,beq,zeros(length(f)),[])
-reshape(linprog(f,A,b,Aeq,beq,zeros(size(f)),[]),5,17)'
+maxsst = zeros(size(f));
+for i = 1:length(f)
+    if mod(i,5) == 0
+        maxsst(i) = d.nb_max_sous_traitant;
+    else
+        maxsst(i) = inf;
+    end
+end
+options = optimoptions('linprog', 'Algorithm', 'simplex');
+
+reshape(linprog(f,A,b,Aeq,beq,zeros(size(f)),maxsst,zeros(size(f)),options),5,17)'
+%reshape(linprog(f,A,b,Aeq,beq,zeros(size(f)),[]),5,17)'
