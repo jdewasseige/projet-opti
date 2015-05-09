@@ -16,6 +16,8 @@
 \newcommand{\xretard}{\xSemaine{retard}}
 \newcommand{\xsst}{\xSemaine{sst}}
 
+\newcommand{\texttts}[1]{{\small\texttt{#1}}}
+
 \title{Projet d'optimisation}
 \author{Groupe 1}
 \date{\today}
@@ -30,7 +32,7 @@
 Le tableau~\ref{tab:variablesQuestion1} contient les différentes variables $x_{s,\lambda}$
 qui correspondent au nombre de smartphones pour chaque semaine $s$
 avec la caractéristique $\lambda$.
- 
+
 \begin{table}[h]
   \begin{center}
   \begin{tabular}{|c|l|}
@@ -58,40 +60,25 @@ avec la caractéristique $\lambda$.
 Voici les contraintes du problème de la planification 
 de la ligne d’assemblage à personnel constant.
 \begin{align*}
-  \xstock &= \myX{s-1}{stock} + \xn + \xsup 
-  + \xretard + \xsst - \myX{s-1}{r} - \texttt{demande}(s) \qquad \forall s \\
-  \myX{0}{stock} &= \texttt{stock-initial} \\
-  \myX{T}{stock} &= \myX{0}{stock} \\
-  \xn &\leq \frac{n_{\text{empl0}} \cdot 35}{h_b} \\
-  \xsup &\leq \frac{n_{\text{empl0}} \cdot h_{ss}}{h_{b}} \\
-  \xsst &\leq \texttt{nb\_max\_sous\_traitant} \qquad \forall s \\
-  x_s &\geq 0 \qquad \forall s \\
+  \Delta\xstock + \texttts{demande}(s) &= \xn + \xsup 
+  + \xretard + \xsst - \myX{s-1}{retard} &\forall s \\
+  \myX{s-1}{retard} + \Delta\xstock &\leq \xn + \xsup + \xsst &\forall s \\
+  \myX{0}{stock} &= \texttts{stock-initial} \\
+  \myX{T}{stock} &= \texttts{stock-initial} \\
+  \myX{T}{retard}&= 0 \\
+  \xn &\leq 35\cdot \texttts{nb\_ouvriers}/ d_{a,h}
+  &\forall s \\
+  \xsup &\leq \texttts{nb\_max\_heure\_sup}\cdot\texttts{nb\_ouvriers}/ d_{a,h}
+  &\forall s \\
+  \xsst &\leq \texttts{nb\_max\_sous\_traitant} &\forall s \\
+  x_s &\geq 0 &\forall s
 \end{align*}
 
-\begin{table}[h]
-  \begin{center}
-  \begin{tabular}{|c|l|}
-    \hline
-    Paramètre & Constante représentée \\
-    \hline
-    \hline
-    $c_m$ & \texttt{cout\_materiaux} \\
-    \hline
-    $c_{hs}$ & \texttt{cout\_heure\_sup} \\
-    \hline
-    $c_s$ & \texttt{cout\_stockage} \\
-    \hline
-    $c_r$ & \texttt{cout\_retard} \\
-    \hline
-    $c_{sst}$ & \texttt{cout\_sous\_traitant} \\
-    \hline
-    $d_a$ & \texttt{duree\_assemblage} \\
-    \hline
-  \end{tabular}
-  \caption{Constantes de la modélisation de la ligne d'assemblage.}
-  \label{tab:constantesQuestion1}
-  \end{center}
-\end{table}
+Avec
+\begin{align*}
+  \Delta x_{s,\lambda} &= x_{s,\lambda} - x_{s-1,\lambda} \\
+  d_{a,h} &= \texttts{duree\_assemblage}/60.
+\end{align*}
 
 \subsection*{Fonction objectif}
 \[
