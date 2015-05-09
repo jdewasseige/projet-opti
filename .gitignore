@@ -13,6 +13,8 @@
 *.fdb_latexmk
 *.fls
 *.run.xml
+*.asv
+*.db
 file/*
 #biblatex
 *.bbl
