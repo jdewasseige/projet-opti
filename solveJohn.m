@@ -41,9 +41,9 @@ dpSineg = [0  0 -1 1  0];
 
 Anor = kron([zeros(T,1),eye(T)],toNor);
 bnor = repmat(35*c_ouvriers,T,1);
-Asup = kron([eye(T),zeros(T,1)],toSup);
+Asup = kron([zeros(T,1),eye(T)],toSup);
 bsup = repmat(d.nb_max_heure_sup*c_ouvriers,T,1);
-Asst = kron([eye(T),zeros(T,1)],toSst);
+Asst = kron([zeros(T,1),eye(T)],toSst);
 bsst = repmat(d.nb_max_sous_traitant,T,1);
 
 A = [kron([eye(T),zeros(T,1)],dpSineg) + kron([zeros(T,1),eye(T)],dSineg);...
@@ -54,8 +54,9 @@ lb = zeros(size(f));
 ub = repmat(inf,size(f),1);
 
 options = optimoptions(@linprog, 'Algorithm', 'simplex');%Pour qu'il nous donne bien une sol entiere s'il y en a une
-X = linprog(f,A,b,Aeq,beq,lb,ub,zeros(size(f)),options)
+[X,fval] = linprog(f,A,b,Aeq,beq,lb,ub,zeros(size(f)),options);
 reshape(X,L,T+1)'
+fprintf('Le cout total vaut %d.\n',fval);
 % x0 ignore pour l'algorithm du simplexe
 
 
