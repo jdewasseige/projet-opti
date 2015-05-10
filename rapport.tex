@@ -131,6 +131,8 @@ Il faut également que les constantes \texttt{stock-initial},
 \subsubsection*{Preuve}
 Pour le prouver, nous allons reformuler notre problème sous la forme d'un problème de flot de coût minimum.
 Soit le graphe orienté G(V,E), où V représente l'ensemble des noeuds et E l'ensemble des arrêtes.
+Il est utile à ce stade de s'aider d'un schéma représentant le graphe. 
+Celui-ci est repris à la figure \ref{fig:schema_flot}.
 V compte un noeud pour chauqe semaine et un noeud initial.
 On a donc $V := {0, 1, 2, ..., T}$ où 0 est le noeud initial et s est le noeud de la semaine s.
 Définissons maintenant les arrêtes de notre graphe.
@@ -162,6 +164,12 @@ Les capacités maximales ne sont pas dépassées $$0 \leq x_{ij} \leq h_{ij} \, 
 On peut maintenant utiliser le théorème suivant pour conclure que, si nos hypothèses sont vérifiées, notre problème admettra au moins une solution entière.
 \paragraph{Théorème}
 Si les demandes $b_i$ et les capcités $h_{ij}$ d'un problème de flot de coût minimum sont entières alors il existe une solution optimale entière.
+\begin{figure}[hp]
+	\centering
+		\includegraphics[scale = 0.5]{Schema_flot.png}
+	\caption{Schéma représentant le graphe utilisé pour définir le problème de flot de coût minimal}
+	\label{fig:schema_flot}
+\end{figure}
 
 
 
