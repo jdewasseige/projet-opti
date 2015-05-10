@@ -55,9 +55,18 @@ ub = repmat(inf,size(f),1);
 
 options = optimoptions(@linprog, 'Algorithm', 'simplex');%Pour qu'il nous donne bien une sol entiere s'il y en a une
 [X,fval] = linprog(f,A,b,Aeq,beq,lb,ub,zeros(size(f)),options);
-reshape(X,L,T+1)'
-fprintf('Le cout total vaut %d.\n',fval);
-% x0 ignore pour l'algorithm du simplexe
+X = reshape(X,L,T+1)';
+
+fprintf('\nSemaine\t x_n\t x_sup\t x_st\t x_ret\tx_sst\n');
+for i=1:T
+    fprintf('%d',i);
+    for j=1:L
+        fprintf('\t %d',X(i,j));
+    end
+    fprintf('\n');
+end
+
+fprintf('\nLe cout total vaut %d.\n',fval);
 
 
 end
