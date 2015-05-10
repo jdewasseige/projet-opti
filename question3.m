@@ -4,7 +4,6 @@ function solveSimple
 
 % Importation des donnees
 d = importdata('donnees.mat');
-%d.demande(2) = d.demande(2) +1;
 emplDepart = d.nb_ouvriers; 
 % Remise des donnees sous la forme stock-initial;demande;stockfinal 
 % pour faciliter la programmation. 
@@ -85,8 +84,7 @@ end
 options = optimoptions(@linprog, 'Algorithm', 'simplex');%Pour qu'il nous donne bien une sol entiere s'il y en a une
 
 reshape(linprog(f,A,b,Aeq,beq,lb,ub,zeros(size(f)),options),5,17)'
-[x, fval] = linprog(f,A,b,Aeq,beq,lb,ub,zeros(size(f)),options);
-fval
 % x0 ignore pour l'algorithm du simplexe
+%reshape(linprog(f,A,b,Aeq,beq,zeros(size(f)),[]),5,17)'
 
 end
