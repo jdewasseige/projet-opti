@@ -28,7 +28,7 @@ f = repmat(a,T+1,1);
 % contraintes d'egalite
 Aeq = [kron([eye(T),zeros(T,1)],dpSeg) + kron([zeros(T,1),eye(T)],dSeg);
     kron([1,zeros(1,T)],eye(5));
-    zeros(1,L*(T)),toRetard  ; zeros(1,L*(T)), toStock];
+    zeros(1,L*(T)), toStock; zeros(1,L*(T)),toRetard];
 beq = [d.demande';zeros(2,1);d.stock_initial;zeros(2,1);
     d.stock_initial;0];
 
@@ -39,7 +39,7 @@ c_ouvriers = 60*d.nb_ouvriers/d.duree_assemblage;
 dSineg  = [-1 -1 1 0 -1]; 
 dpSineg = [0  0 -1 1  0];
 
-Anor = kron([eye(T),zeros(T,1)],toNor);
+Anor = kron([zeros(T,1),eye(T)],toNor);
 bnor = repmat(35*c_ouvriers,T,1);
 Asup = kron([eye(T),zeros(T,1)],toSup);
 bsup = repmat(d.nb_max_heure_sup*c_ouvriers,T,1);
