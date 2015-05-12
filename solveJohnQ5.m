@@ -1,11 +1,9 @@
-function fval = solveJohn(d);
-%SOLVEJOHN - Implementation et solution du modele lineaire continu de 
-%            la ligne d'assemblage simple (personnel constant).
+function solveJohnQ5
+%SOLVEJOHN - Analyse de l'effet de la modification de la demande sur la
+%fonction objectif.
 
 %% load data, fonction objectif et constantes
-if nargin == 0
 d = importdata('donnees.mat');
-end
 T = d.T; % nombre de semaines
 
 % fonction objectif 
@@ -57,24 +55,29 @@ b = [zeros(T,1);bnor;bsup;bsst];
 lb = zeros(size(f));
 ub = inf(length(f),1);
 
+%% dual
+[m, n] = size(A);
+[meq, neq] = size(Aeq);
+A_dual = [A;Aeq]';
+f_dual = [b;beq];
+b_dual = f;
+ub_dual = [zeros(1, m) inf(1, meq)]';
+
 %% solveur
-
-% simplex pour une solution entiere s'il y en a une
 options = optimoptions(@linprog, 'Algorithm', 'simplex');
+[x, fval] = linprog(-f_dual, A_dual, b_dual, [], [], [], ub_dual);
 
-[X,fval] = linprog(f,A,b,Aeq,beq,lb,ub,zeros(size(f)),options);
+%% affichage
+var = x(end+1-meq:end-7); %Variation de la fonction objectif avec la variation de la demande
+epsilon = 1;
+var_z = dot(var,(d.delta_demande.*epsilon)) %Affichage de la variation du coût
 
-%% affichage de la solution et du cout
-X = reshape(X,L,T+1)';
+d = importdata('donnees.mat');
+z1 = solveJohn(d);
+d.demande = d.demande + epsilon.*d.delta_demande;
+z2 = solveJohn(d);
 
-fprintf('\nSemaine\t x_n\t x_sup\t x_st\t x_ret\tx_sst');
-for i=1:T
-    fprintf('\n%d',i);
-    for j=1:L
-        fprintf('\t %d',X(i,j));
-    end
-end
-
-fprintf('\n\nLe cout total vaut %d.\n',fval);
+var_z = dot(var,(d.delta_demande.*epsilon))
+z2-z1
 
 end
