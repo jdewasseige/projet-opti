@@ -1,9 +1,24 @@
-function solveJohnQ5
-%SOLVEJOHN - Analyse de l'effet de la modification de la demande sur la
-%fonction objectif.
+function [fval,X] = solveJohn(donnees,printInfos)
+%SOLVEJOHN - Implementation et solution du modele lineaire continu de 
+%            la ligne d'assemblage simple (personnel constant).
+
+% input    - donnees : si aucun vecteur de donnees n'est utilise en
+%                      argument, alors on utilise le fichier 'donnees.mat'
+%
+% output   - X     : matrice de taille Tx5 ou l'element x_(i,j)
+%                      correspond au nombre de smartphones de type j
+%                      produits pendant la semaine i
+%                      j correspond a un des types suivants
+%                      [x_normal x_suplementaire x_stock x_retard x_sst]
+%          - fval  : valeur du cout optimal
 
 %% load data, fonction objectif et constantes
-d = importdata('donnees.mat');
+if nargin==0
+    d = importdata('donnees.mat');
+else
+    d = donnees;
+end
+
 T = d.T; % nombre de semaines
 
 % fonction objectif 
@@ -51,18 +66,30 @@ A = [kron([eye(T),zeros(T,1)],dpSineg) + kron([zeros(T,1),eye(T)],dSineg);...
     Anor; Asup; Asst];
 b = [zeros(T,1);bnor;bsup;bsst];
 
-%% dual
-[m, n] = size(A);
-[meq, neq] = size(Aeq);
-A_dual = [A;Aeq]';
-f_dual = [b;beq];
-b_dual = f;
-ub_dual = [zeros(1, m) inf(1, meq)]';
+%% bornes
+lb = zeros(size(f));
+ub = [];
 
 %% solveur
-options = optimoptions(@linprog, 'Algorithm', 'simplex');
-[x, fval] = linprog(-f_dual, A_dual, b_dual, [], [], [], ub_dual)
 
-realVal = f_dual'*x 
+% simplex pour une solution entiere s'il y en a une
+options = optimoptions(@linprog, 'Algorithm', 'simplex');
+
+[X,fval] = linprog(f,A,b,Aeq,beq,lb,ub,zeros(size(f)),options);
+
+fval = fval;
+%% affichage de la solution et du cout
+X = reshape(X,L,T+1)';
+
+if nargin>1 & printInfos
+    fprintf('\nSemaine\t x_n\t x_sup\t x_st\t x_ret\tx_sst');
+    for i=1:T
+        fprintf('\n%d',i);
+        for j=1:L
+            fprintf('\t %d',X(i,j));
+        end
+    end
+    fprintf('\n\nLe cout total vaut %d.\n',fval);
+end
 
 end

@@ -39,7 +39,7 @@ Aeq(d.T,(length(a)*d.T-2)) = 1;
 Aeq(d.T,(length(a)*d.T-7)) = -1;
 Aeq(d.T+1, ((length(f))/5-2)*5+3) = 1; %Pour dire de revenir au stock initial
 beq(d.T+1) = d.stock_initial;
-Aeq(d.T+2, ((length(f))/5-2)*5+4) = 1 %On peut pas rendre en retard la derniere semaine !
+Aeq(d.T+2, ((length(f))/5-2)*5+4) = 1; %On peut pas rendre en retard la derniere semaine !
 beq(d.T+2) = 0;
 %full(Aeq)
 
