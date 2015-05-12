@@ -68,7 +68,7 @@ b = [zeros(T,1);bnor;bsup;bsst];
 
 %% bornes
 lb = zeros(size(f));
-ub = inf(length(f),1);
+ub = [];
 
 %% solveur
 
