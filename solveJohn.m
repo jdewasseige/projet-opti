@@ -2,18 +2,17 @@ function solveJohn
 %SOLVEJOHN - Implementation et solution du modele lineaire continu de 
 %            la ligne d'assemblage simple (personnel constant).
 
-
-%% load data et constantes
+%% load data, fonction objectif et constantes
 d = importdata('donnees.mat');
 T = d.T; % nombre de semaines
 
-% vecteur x = [x_n x_sup x_stock x_retard x_sst]'
-L = 5; % taille de x
-
-% creation du vecteur objectif (f)
-a = [d.cout_materiaux d.cout_materiaux+d.duree_assemblage/60*d.cout_heure_sup ...
+% fonction objectif 
+c = [d.cout_materiaux d.cout_materiaux+d.duree_assemblage/60*d.cout_heure_sup ...
     d.cout_stockage d.cout_retard d.cout_sous_traitant]';
-f = repmat(a,T+1,1);
+f = repmat(c,T+1,1);
+
+% vecteur x_s = [x_n x_sup x_stock x_retard x_sst]'
+L = 5; % taille de x_s
 
 % acceder a x_lambda
 toNor   = [1 0 0 0 0];
@@ -63,19 +62,17 @@ options = optimoptions(@linprog, 'Algorithm', 'simplex');
 
 [X,fval] = linprog(f,A,b,Aeq,beq,lb,ub,zeros(size(f)),options);
 
-
 %% affichage de la solution et du cout
 X = reshape(X,L,T+1)';
 
-fprintf('\nSemaine\t x_n\t x_sup\t x_st\t x_ret\tx_sst\n');
+fprintf('\nSemaine\t x_n\t x_sup\t x_st\t x_ret\tx_sst');
 for i=1:T
-    fprintf('%d',i);
+    fprintf('\n%d',i);
     for j=1:L
         fprintf('\t %d',X(i,j));
     end
-    fprintf('\n');
 end
 
-fprintf('\nLe cout total vaut %d.\n',fval);
+fprintf('\n\nLe cout total vaut %d.\n',fval);
 
 end
