@@ -198,11 +198,13 @@ Si les demandes $b_i$ et les capcités $h_{ij}$ d'un problème de flot de coût 
 
 \question %3
 
-<<<<<<< HEAD
+Notre implémentation se trouve dans le fichier \texttt{question3.m}.
+
 \question %4
+
 Le problème dual nous donne de telles informations. En effet, soit notre problème reformulé sous forme standard : \\
 \begin{align*} 
-	\texttts{minimiser} \, \, c^Tx &\\
+	\text{minimiser} c^Tx &\\
 	Ax &= b  \\
 	x &\geq 0 
 \end{align*}
@@ -210,12 +212,6 @@ Une partie de vecteur b correspond exactement à la demande.
 Or, si $y_{*}$ est solution du dual de ce problème, la variation de la fonction objectif à une modification $\Delta b$ du vecteur $b$ sera exactement égal à $y_{*}^{T}\Delta b$. \\
 En particulier donc, si $\Delta b$ est égal à $$epsilon * delta\_demande$$ aux composantes de $b$ correspondant à la demande et 0 partout ailleurs, $y_{*}^{T}\Delta b$ nous donnera la variation de l'objectif causée par cette variation de la demande.
 %Besoin d'une 'preuve' mathématique ? Sachant que ce sera bcp du recopiage des slides...
-=======
-Notre implémentation se trouve dans le fichier \texttt{question3.m}.
-
-\question %4
-
->>>>>>> b579b5fc02984dd1ca733cacf35fbf1ed98456a5
 
 
 
