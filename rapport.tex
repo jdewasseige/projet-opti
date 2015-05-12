@@ -236,6 +236,16 @@ Or, si $y_{*}$ est solution du dual de ce problème, la variation de la fonction
 En particulier donc, si $\Delta b$ est égal à $$epsilon * delta\_demande$$ aux composantes de $b$ correspondant à la demande et 0 partout ailleurs, $y_{*}^{T}\Delta b$ nous donnera la variation de l'objectif causée par cette variation de la demande.
 %Besoin d'une 'preuve' mathématique ? Sachant que ce sera bcp du recopiage des slides...
 
+\question %5
 
+\question %6
+Si le coût des heures supplémentaires augmentent, la fonction objectif devient 
+\[
+  \mbox{minimiser } 
+  \sum_{s=1}^{T} 
+  c_m\, \xn + (c_m + d_{a,h} \, c_{hs, n})\, \xsup
+  + c_s\, \xstock + c_r\, \xretard + c_{sst}\, \xsst
+\]
+avec $c_{hs, n} = c_{hs, 0} \, \sum_{i=0}^{\xsup \, d_{a, h}} (0.05)^{i} \, {\xsup \, d_{a,h} -1 \choose i}$. Ce modèle n'est plus linéaire.
 
 \end{document}

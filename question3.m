@@ -1,10 +1,12 @@
-function solveSimple
+function fval = solveSimple
 %SOLVESIMPLE - Implementation et solution du modele lineaire continu de 
 %              la ligne d'assemblage simple (personnel constant).
 
 % Importation des donnees
 d = importdata('donnees.mat');
-d.demande(3) = d.demande(3) +1;
+%d.demande(15) = d.demande(15) +1;
+epsilon = 1;
+d.demande = d.demande + epsilon.*d.delta_demande;
 emplDepart = d.nb_ouvriers; 
 % Remise des donnees sous la forme stock-initial;demande;stockfinal 
 % pour faciliter la programmation. 

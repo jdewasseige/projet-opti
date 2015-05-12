@@ -72,7 +72,6 @@ var = x(end+1-meq:end-7); %Variation de la fonction objectif avec la variation d
 epsilon = 1;
 var_z = dot(var,(d.delta_demande.*epsilon)) %Affichage de la variation du coût
 
-d = importdata('donnees.mat');
 z1 = solveJohn(d);
 d.demande = d.demande + epsilon.*d.delta_demande;
 z2 = solveJohn(d);
