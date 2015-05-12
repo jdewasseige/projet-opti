@@ -51,10 +51,6 @@ A = [kron([eye(T),zeros(T,1)],dpSineg) + kron([zeros(T,1),eye(T)],dSineg);...
     Anor; Asup; Asst];
 b = [zeros(T,1);bnor;bsup;bsst];
 
-%% bornes
-lb = zeros(size(f));
-ub = inf(length(f),1);
-
 %% dual
 [m, n] = size(A);
 [meq, neq] = size(Aeq);
@@ -65,18 +61,8 @@ ub_dual = [zeros(1, m) inf(1, meq)]';
 
 %% solveur
 options = optimoptions(@linprog, 'Algorithm', 'simplex');
-[x, fval] = linprog(-f_dual, A_dual, b_dual, [], [], [], ub_dual);
+[x, fval] = linprog(-f_dual, A_dual, b_dual, [], [], [], ub_dual)
 
-%% affichage
-var = x(end+1-meq:end-7); %Variation de la fonction objectif avec la variation de la demande
-epsilon = 1;
-var_z = dot(var,(d.delta_demande.*epsilon)) %Affichage de la variation du coût
-
-z1 = solveJohn(d);
-d.demande = d.demande + epsilon.*d.delta_demande;
-z2 = solveJohn(d);
-
-var_z = dot(var,(d.delta_demande.*epsilon))
-z2-z1
+realVal = f_dual'*x 
 
 end
