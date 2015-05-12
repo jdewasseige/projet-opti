@@ -104,4 +104,6 @@ f_dual = [b beq];
 b_dual = f;
 ub_dual = [zeros(1, m) inf(1, meq)]';
 [x, fval] = linprog(-f_dual, A_dual, b_dual, [], [], [], ub_dual);
-x(end-meq+1:end) %Variation de la fonction objectif avec la variation de la demande
+x(end-meq+1:end-2) %Variation de la fonction objectif avec la variation de la demande
+%Le -2 vient du fait que les deux dernières contraintes d'égalités ne
+%font pas intervenir la demande
