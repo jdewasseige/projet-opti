@@ -15,7 +15,7 @@
 *.run.xml
 *.asv
 *.db
-file/*
+auxFile/*
 #biblatex
 *.bbl
 *.bcf
