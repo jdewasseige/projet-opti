@@ -1,4 +1,4 @@
-function [fval,X] = solveJohn(donnees,printInfos)
+function [cout,X] = solveJohn(donnees,printInfos)
 %SOLVEJOHN - Implementation et solution du modele lineaire continu de 
 %            la ligne d'assemblage simple (personnel constant).
 
@@ -30,11 +30,11 @@ f = repmat(c,T+1,1);
 L = 5; % taille de x_s
 
 % acceder a x_lambda
-toNor   = [1 0 0 0 0];
-toSup   = [0 1 0 0 0];
-toStock = [0 0 1 0 0];
-toRetard= [0 0 0 1 0];
-toSst   = [0 0 0 0 1];
+to.Nor   = [1 0 0 0 0];
+to.Sup   = [0 1 0 0 0];
+to.Stock = [0 0 1 0 0];
+to.Retard= [0 0 0 1 0];
+to.Sst   = [0 0 0 0 1];
 
 %% contraintes d'egalite
 
@@ -44,7 +44,7 @@ dpSeg  = [0 0 1 -1 0];
 
 Aeq = [kron([eye(T),zeros(T,1)],dpSeg) + kron([zeros(T,1),eye(T)],dSeg);
     kron([1,zeros(1,T)],eye(5));
-    zeros(1,L*(T)), toStock; zeros(1,L*(T)),toRetard];
+    zeros(1,L*(T)), to.Stock; zeros(1,L*(T)),to.Retard];
 beq = [d.demande';zeros(2,1);d.stock_initial;zeros(2,1);
     d.stock_initial;0];
 
@@ -55,11 +55,11 @@ c_ouvriers = 60*d.nb_ouvriers/d.duree_assemblage;
 dSineg  = [-1 -1 1 0 -1]; 
 dpSineg = [0  0 -1 1  0];
 
-Anor = kron([zeros(T,1),eye(T)],toNor);
+Anor = kron([zeros(T,1),eye(T)],to.Nor);
 bnor = repmat(35*c_ouvriers,T,1);
-Asup = kron([zeros(T,1),eye(T)],toSup);
+Asup = kron([zeros(T,1),eye(T)],to.Sup);
 bsup = repmat(d.nb_max_heure_sup*c_ouvriers,T,1);
-Asst = kron([zeros(T,1),eye(T)],toSst);
+Asst = kron([zeros(T,1),eye(T)],to.Sst);
 bsst = repmat(d.nb_max_sous_traitant,T,1);
 
 A = [kron([eye(T),zeros(T,1)],dpSineg) + kron([zeros(T,1),eye(T)],dSineg);...
@@ -75,9 +75,9 @@ ub = [];
 % simplex pour une solution entiere s'il y en a une
 options = optimoptions(@linprog, 'Algorithm', 'simplex');
 
-[X,fval] = linprog(f,A,b,Aeq,beq,lb,ub,zeros(size(f)),options);
+[X,cout] = linprog(f,A,b,Aeq,beq,lb,ub,zeros(size(f)),options);
 
-fval = fval;
+cout = cout + 35*d.nb_ouvriers*d.cout_horaire
 %% affichage de la solution et du cout
 X = reshape(X,L,T+1)';
 
@@ -89,7 +89,7 @@ if printInfos
             fprintf('\t %d',X(i,j));
         end
     end
-    fprintf('\n\nLe cout total vaut %d.\n',fval);
+    fprintf('\n\nLe cout total vaut %d.\n',cout);
 end
 
 end
