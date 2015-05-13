@@ -199,7 +199,7 @@ On peut maintenant utiliser le théorème suivant pour conclure que, si nos hypo
 \paragraph{Théorème}
 Si les demandes $b_i$ et les capcités $h_{ij}$ d'un problème de flot de coût minimum sont entières alors il existe une solution optimale entière.
 
-\begin{figure}[hp]
+\begin{figure}[H]
 	\centering
 		\includegraphics[scale = 0.5]{Schema_flot.png}
 	\caption{Schéma représentant le graphe utilisé pour définir 
@@ -220,13 +220,20 @@ Celle-ci effectue le produit tensoriel de Kronecker entre deux matrices.
 C'est-à-dire que pour \texttt{kron(A,B)},
 chaque élément de $A$ multiplie la matrice $B$.
 En l'utilisant de manière appropriée avec des matrices nulles et diagonales,
-on peut effectuer un remplissage des matrices des contraintes très efficace.
+on peut effectuer un remplissage des matrices des contraintes très efficace. 
+\paragraph{}
+Les résultats obtenus sont représentés graphiquement à la figure \ref{fig:GraphProduction}. 
+Comme on pouvait s'y attendre, la solution optimale utilise presque chaque semaine au maximum la ressource la moins chère, en l'occurence la production par les ouvriers payés au salaire normal.
+On observe également que la solution optimale constitue un stock dans la première partie de la planification pour faire face au pic de demande situé entre les semaines 5 et 8.
+La demande est particulièrement importante à la semaine 7, et on voit que notre stock constitué s'épuise totalement lors de cette semaine.
+On commence également à avoir recours au retard.
 
 
-\begin{figure}[hp]
+
+\begin{figure}[H]
 	\centering
 		\includegraphics[scale = 0.8]{GraphProduction.png}
-	\caption{Graphe de la production de smartphones.}
+	\caption{Répartition du moyen de production des smartphones en fonction des semaines}
 	\label{fig:GraphProduction}
 \end{figure}
 
