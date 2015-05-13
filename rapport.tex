@@ -15,6 +15,8 @@
 \newcommand{\xstock}{\xSemaine{stock}}
 \newcommand{\xretard}{\xSemaine{retard}}
 \newcommand{\xsst}{\xSemaine{sst}}
+\newcommand{\xemb}{\xSemaine{emb}}
+\newcommand{\xlic}{\xSemaine{lic}}
 
 \newcommand{\texttts}[1]{{\small\texttt{#1}}}
 
@@ -56,7 +58,7 @@ avec la caractéristique $\lambda$.
     $\xsst$ & Sous-traités. \\
     \hline
   \end{tabular}
-  \caption{Variables de la modélisation de la ligne d'assemblage.}
+  \caption{Variables de la modélisation de la ligne d'assemblage simple.}
   \label{tab:variablesQuestion1}
   \end{center}
 \end{table}
@@ -68,7 +70,11 @@ On pose que $\Delta x_{s,\lambda} = x_{s,\lambda} - x_{s-1,\lambda}$.
 \begin{align*}
   \Delta\xstock + \texttts{demande}(s) &= \xn + \xsup 
   + \xretard + \xsst - \myX{s-1}{retard} &\forall s \\
+  \myX{0}{n}&= 0 \\
+  \myX{0}{sup}&= 0 \\
   \myX{0}{stock} &= \texttts{stock-initial} \\
+  \myX{0}{retard}&= 0 \\
+  \myX{0}{sst}&= 0 \\
   \myX{T}{stock} &= \texttts{stock-initial} \\
   \myX{T}{retard}&= 0 \\
   \myX{s-1}{retard} + \Delta\xstock &\leq \xn + \xsup + \xsst &\forall s \\
@@ -109,7 +115,7 @@ des constantes utilisées.
     $d_{a,h}$ & \texttt{duree\_assemblage}/60 \\
     \hline
   \end{tabular}
-  \caption{Constantes de la modélisation de la ligne d'assemblage.}
+  \caption{Constantes de la modélisation de la ligne d'assemblage simple.}
   \label{tab:constantesQuestion1}
   \end{center}
 \end{table}
@@ -221,20 +227,24 @@ C'est-à-dire que pour \texttt{kron(A,B)},
 chaque élément de $A$ multiplie la matrice $B$.
 En l'utilisant de manière appropriée avec des matrices nulles et diagonales,
 on peut effectuer un remplissage des matrices des contraintes très efficace. 
-\paragraph{}
-Les résultats obtenus sont représentés graphiquement à la figure \ref{fig:GraphProduction}. 
-Comme on pouvait s'y attendre, la solution optimale utilise presque chaque semaine au maximum la ressource la moins chère, en l'occurence la production par les ouvriers payés au salaire normal.
-On observe également que la solution optimale constitue un stock dans la première partie de la planification pour faire face au pic de demande situé entre les semaines 5 et 8.
-La demande est particulièrement importante à la semaine 7, et on voit que notre stock constitué s'épuise totalement lors de cette semaine.
+
+Les résultats obtenus sont représentés graphiquement 
+à la figure~\ref{fig:grapheProduction}. 
+Comme on pouvait s'y attendre, la solution optimale utilise presque chaque
+semaine au maximum la ressource la moins chère,
+en l'occurence la production par les ouvriers payés au salaire normal.
+On observe également que la solution optimale constitue un stock dans la première partie de la planification pour faire face au pic de demande 
+situé entre les semaines 5 et 8.
+La demande est particulièrement importante à la semaine 7,
+et on voit que notre stock constitué s'épuise totalement lors de cette semaine.
 On commence également à avoir recours au retard.
 
-
-
 \begin{figure}[H]
-	\centering
-		\includegraphics[scale = 0.8]{GraphProduction.png}
-	\caption{Répartition du moyen de production des smartphones en fonction des semaines}
-	\label{fig:GraphProduction}
+  \begin{center}
+    \includegraphics[scale = 0.8]{grapheProduction.png}
+	  \caption{Répartition du moyen de production des smartphones en fonction des semaines.}
+	  \label{fig:grapheProduction}
+  \end{center}
 \end{figure}
 
 \question %4
@@ -298,9 +308,20 @@ avec \emph{une seule} solution $y^{*}$
 (c'est-à-dire un apppel à \texttt{linprog}).
 On retrouve les résultats des tests d'efficacité
 sur le graphe de la figure~\ref{fig:efficiencyDual}.
+
 \begin{figure}
   \begin{center}
-    \includegraphics[scale=0.7]{img/efficiencyDual.eps}
+    \includegraphics[scale=0.6]{img/responseToPerturbations.eps}
+    \caption{Comparaison de la réponse aux perturbations du primal 
+    et dual. On remarque que les valeurs restent égales jusqu'à 
+    $\epsilon \approx 0.6$.}
+    \label{fig:responseToPerturbations}
+  \end{center}
+\end{figure}
+
+\begin{figure}
+  \begin{center}
+    \includegraphics[scale=0.6]{img/efficiencyDual.eps}
     \caption{Comparaison de l'efficacité du primal et dual lors de
     l'analyse de perturbations sur les contraintes.}
     \label{fig:efficiencyDual}
@@ -320,19 +341,45 @@ le problème sous forme linéaire ? Expliquez.
 Et que se passerait-il si le coût horaire des supplémentaires \emph{diminuait}
 lorsque le nombre d'heure prestées augmente ? Justifiez.}
 
+Si le coût des heures supplémentaires n'est plus constant mais augmente au fur et à mesure de leur utilisation, 
+le coût de celles-ci dépenderait directement du nombre de smartphones 
+produits de cette manière.
 
-Si le coût des heures supplémentaires n'est plus constant mais augmente au fur et à mesure de leur utilisation, le coût de celles-ci dépenderait directement du nombre de smartphones produit de cette manière.
-Selon nos notations, on aurait que $c_{hs}$ dépenderait directement de $\xsup$, ce qui renderait notre problème non-linéaire au niveau de la fonction objectif.
-On peut d'ailleurs caluler explicitement la nouvelle fonction objectif. \\
-Si le coût des heures supplémentaires augmentent avec un taux de $0.05$, la fonction objectif devient 
+En effet, on peut réécrire notre fonction objectif comme
 \[
   \mbox{minimiser } 
   \sum_{s=1}^{T} 
-  c_m\, \xn + (c_m + d_{a,h} \, c_{hs, n})\, \xsup
+  c_m\, \xn + c_m \, \xsup + \mathcal{C}_{hs} (\xsup)
   + c_s\, \xstock + c_r\, \xretard + c_{sst}\, \xsst
 \]
-avec \[c_{hs, n} = \frac{c_{hs, 0} \, \sum_{i=0}^{\xsup \, d_{a, h}-1} (0.05)^{i} \, {\xsup \, d_{a,h} -1 \choose i}}{\xsup \, d_{a,h}}\] Ce modèle n'est plus linéaire. \\
-De même, si le coût des heures supplémentaires diminuait avec un taux de $0.05$, on aurait  \[c_{hs, n} = \frac{c_{hs, 0} \, \sum_{i=0}^{\xsup \, d_{a, h}-1}(-1)^{i} \, (0.05)^{i} \, {\xsup \, d_{a,h} -1 \choose i}}{\xsup \, d_{a,h}}\]
+avec
+\[
+  \mathcal{C}_{hs} (\xsup) = \texttts{cout\_heure\_sup} \cdot
+  \sum_{i=0}^{\alpha} \binom{\alpha}{i} (0.05)^{i} 
+\]
+Par soucis de lisibilité, on a posé
+\[ \alpha = \xsup \, d_{a,h} - 1 \]
+$\alpha$ correspond donc au nombre d'heures supplémentaires qui auront
+un cout différent de \texttt{cout\_heure\_sup}.
+
+On remarque immédiatement que la fonction $\mathcal{C}_{hs}$
+est \emph{non-linéaire} en $\xsup$ puisque 
+\[ \binom{\alpha}{i} =\frac{\alpha !}{i!\,(\alpha-i)!} \]
+
+Si le coût des heures supplémentaires \emph{augmentent} avec un taux de $0.05$,
+la fonction objectif devient 
+
+avec
+
+Ce modèle n'est plus linéaire.
+
+De même, si le coût des heures supplémentaires \emph{diminuait} 
+avec un taux de $0.05$,
+on aurait
+\[
+  c_{hs} (\xsup) = \texttts{cout\_heure\_sup} \cdot
+  \sum_{i=0}^{\alpha} (-1)^i(0.05)^{i} \,   \binom{\alpha}{i}
+\]
 
 
 \question %7
@@ -342,18 +389,30 @@ incluant le gestion du personnel, en vous basant sur le modèle déjà
 construit à la Question 1. Décrivez successivement variables, 
 contraintes et fonction objectif.}
 
-Le nombre d'ouvriers n'étant plus constant, nous allons rajouter deux variables par semaine pour modéliser le problème : $x_{s,emb}$, le nombre d'ouvriers embauchés au début de la semaine s et $x_{s,lic}$, le nombre d'ouvriers licienciés au début de la semaine s. Dans la fonction objectif, il faut maintenant tenir compte du cout de ces recrutements et ces licenciements ainsi que du coût du salaire des ouvriers, non constant. \\
-En ce qui concerne les contraintes, il faut modifier celles sur le nombre de smartphones maximum produits dans l'entreprise. Il faut également ajouter les contraintes correspondants au nombre d'ouvriers (maximum et minimum).
+Le nombre d'ouvriers n'étant plus constant, nous allons rajouter deux variables
+par semaine pour modéliser le problème :
+\begin{itemize}
+  \item[$\diamond$] $\xemb$ le nombre d'ouvriers embauchés au début de la semaine $s$
+  \item[$\diamond$] $\xlic$ le nombre d'ouvriers licienciés au début de la semaine $s$.
+\end{itemize}
+Dans la fonction objectif, il faut maintenant tenir compte du cout de 
+ces recrutements et ces licenciements 
+ainsi que du coût du salaire des ouvriers, non constant.
+
+En ce qui concerne les contraintes, il faut modifier celles sur 
+le nombre de smartphones maximum produits dans l'entreprise. 
+Il faut également ajouter les contraintes correspondants 
+au nombre d'ouvriers (maximum et minimum).
 
 \subsection*{Fonction objectif}
-\begin{multline*}
+\begin{align*}
   \mbox{minimiser } 
   \sum_{s=1}^{T} 
   c_m\, \xn + (c_m + d_{a,h} \, c_{hs})\, \xsup
   + c_s\, \xstock + c_r\, \xretard + c_{sst}\, \xsst \\
-  + 35 \, c_{hor} \, (n_{ouv} + \sum_{i=1}^{s} x_{i,emb} - x_{i,lic}) 
-  + c_{emb} \, x_{s,emb} + c_{lic} \, x_{i,lic}
-\end{multline*}
+  + 35 \, c_{h} \, (n_{ouv} + \sum_{i=1}^{s} x_{i,emb} - x_{i,lic}) 
+  + c_{emb} \, \xemb + c_{lic} \, x_{i,lic}
+\end{align*}
 
 Le tableau~\ref{tab:constantesQuestion7} contient les nouvelles abréviations
 des constantes utilisées.
@@ -364,16 +423,17 @@ des constantes utilisées.
     Paramètre & Constante représentée \\
     \hline
     \hline
-    $c_{hor}$ & \texttt{cout\_horaire} \\
-    \hline
-    $n_{ouv}$ & \texttt{nb\_ouvriers} \\
+    $c_{h}$ & \texttt{cout\_horaire} \\
     \hline
     $c_{emb}$ & \texttt{cout\_embauche} \\
     \hline
     $c_{lic}$ & \texttt{cout\_licenciement} \\
     \hline
+    $n_{ouv}$ & \texttt{nb\_ouvriers} \\
+    \hline
   \end{tabular}
-  \caption{Constantes de la modélisation de la ligne d'assemblage.}
+  \caption{Constantes de la modélisation de la ligne d'assemblage
+  avec gestion du personnel.}
   \label{tab:constantesQuestion7}
   \end{center}
 \end{table}
@@ -384,13 +444,17 @@ de la ligne d’assemblage à personnel variable.
 \begin{align*}
   \Delta\xstock + \texttts{demande}(s) &= \xn + \xsup 
   + \xretard + \xsst - \myX{s-1}{retard} &\forall s \\
+  \myX{0}{n}&= 0 \\
+  \myX{0}{sup}&= 0 \\
   \myX{0}{stock} &= \texttts{stock-initial} \\
+  \myX{0}{retard}&= 0 \\
+  \myX{0}{sst}&= 0 \\
   \myX{T}{stock} &= \texttts{stock-initial} \\
   \myX{T}{retard}&= 0 \\
   \myX{s-1}{retard} + \Delta\xstock &\leq \xn + \xsup + \xsst &\forall s \\
   \xn &\leq 35\cdot (n_{ouv} + \sum_{i=1}^{s} x_{i,emb} - x_{i,lic})/ d_{a,h}
   &\forall s \\
-  \xsup &\leq \texttts{nb\_max\_heure\_sup}\cdot (n_{ouv} + \sum_{i=1}^{s} x_{i,emb} - x_{i,lic})/ d_{a,h}
+  \xsup &\leq \texttts{nb\_max\_heure\_sup}\cdot \left(n_{ouv} + \sum_{i=1}^{s} x_{i,emb} - x_{i,lic} \right)/ d_{a,h}
   &\forall s \\
   \xsst &\leq \texttts{nb\_max\_sous\_traitant} &\forall s \\
   n_{ouv} + \sum_{i=1}^{s} x_{i,emb} - x_{i,lic} &\leq \texttts{nb\_max\_ouvriers}  &\forall s \\
