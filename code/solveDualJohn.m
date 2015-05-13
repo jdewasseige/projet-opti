@@ -55,14 +55,14 @@ b = [zeros(T,1);bnor;bsup;bsst];
 [meq, neq] = size(Aeq);
 [m, n] = size(A);
 A_dual = [Aeq;A]';
-f_dual = [beq;b];
 b_dual = f;
-ub_dual = [inf(1, meq) zeros(1, m)]';
+f_dual = [beq;b];
+ub_dual = [inf(meq,1);zeros(m,1)];
 
 %% solveur
 options = optimoptions(@linprog, 'Algorithm', 'simplex');
-[x, fval] = linprog(-f_dual, A_dual, b_dual, [], [], [], ub_dual);
-
+[x, fval] = linprog(-f_dual, A_dual, b_dual,...
+    [], [], [], ub_dual);
 realVal = f_dual'*x ;
 
 end

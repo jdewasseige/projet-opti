@@ -81,10 +81,10 @@ fval = fval;
 %% affichage de la solution et du cout
 X = reshape(X,L,T+1)';
 
-if nargin>1 & printInfos
+if printInfos
     fprintf('\nSemaine\t x_n\t x_sup\t x_st\t x_ret\tx_sst');
-    for i=1:T
-        fprintf('\n%d',i);
+    for i=1:T+1
+        fprintf('\n%d',i-1);
         for j=1:L
             fprintf('\t %d',X(i,j));
         end
