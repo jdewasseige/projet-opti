@@ -24,8 +24,8 @@ compareDualityValues
     j=0;
     for n = nValues
         j = j+1;
-        tic; multiplePrimal(nValues(j),d) ; nP(j) = toc; toc
-        tic; multipleDual(nValues(j),d); nD(j) = toc; toc
+        tic; multiplePrimal(nValues(j)) ; nP(j) = toc; toc
+        tic; multipleDual(nValues(j)); nD(j) = toc; toc
     end
 
     figure
