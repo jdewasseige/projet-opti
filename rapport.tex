@@ -222,6 +222,14 @@ chaque élément de $A$ multiplie la matrice $B$.
 En l'utilisant de manière appropriée avec des matrices nulles et diagonales,
 on peut effectuer un remplissage des matrices des contraintes très efficace.
 
+
+\begin{figure}[hp]
+	\centering
+		\includegraphics[scale = 0.8]{GraphProduction.png}
+	\caption{Graphe de la production de smartphones.}
+	\label{fig:GraphProduction}
+\end{figure}
+
 \question %4
 \emph{Décrivez une procédure permettant, avec le moins de nouveaux calculs
 possibles, d'évaluer les conséquences sur la fonction objectif d’une petite
@@ -305,14 +313,20 @@ le problème sous forme linéaire ? Expliquez.
 Et que se passerait-il si le coût horaire des supplémentaires \emph{diminuait}
 lorsque le nombre d'heure prestées augmente ? Justifiez.}
 
-Si le coût des heures supplémentaires augmentent, la fonction objectif devient 
+
+Si le coût des heures supplémentaires n'est plus constant mais augmente au fur et à mesure de leur utilisation, le coût de celles-ci dépenderait directement du nombre de smartphones produit de cette manière.
+Selon nos notations, on aurait que $c_{hs}$ dépenderait directement de $\xsup$, ce qui renderait notre problème non-linéaire au niveau de la fonction objectif.
+On peut d'ailleurs caluler explicitement la nouvelle fonction objectif. \\
+Si le coût des heures supplémentaires augmentent avec un taux de $0.05$, la fonction objectif devient 
 \[
   \mbox{minimiser } 
   \sum_{s=1}^{T} 
   c_m\, \xn + (c_m + d_{a,h} \, c_{hs, n})\, \xsup
   + c_s\, \xstock + c_r\, \xretard + c_{sst}\, \xsst
 \]
-avec $c_{hs, n} = c_{hs, 0} \, \sum_{i=0}^{\xsup \, d_{a, h}} (0.05)^{i} \, {\xsup \, d_{a,h} -1 \choose i}$. Ce modèle n'est plus linéaire.
+avec \[c_{hs, n} = \frac{c_{hs, 0} \, \sum_{i=0}^{\xsup \, d_{a, h}-1} (0.05)^{i} \, {\xsup \, d_{a,h} -1 \choose i}}{\xsup \, d_{a,h}}\] Ce modèle n'est plus linéaire. \\
+De même, si le coût des heures supplémentaires diminuait avec un taux de $0.05$, on aurait  \[c_{hs, n} = \frac{c_{hs, 0} \, \sum_{i=0}^{\xsup \, d_{a, h}-1}(-1)^{i} \, (0.05)^{i} \, {\xsup \, d_{a,h} -1 \choose i}}{\xsup \, d_{a,h}}\]
+
 
 \question %7
 \emph{Donnez à présent une formulation linéaire (continue, sans variables
@@ -320,5 +334,60 @@ entières) du problème de la planification de la ligne d'assemblage
 incluant le gestion du personnel, en vous basant sur le modèle déjà 
 construit à la Question 1. Décrivez successivement variables, 
 contraintes et fonction objectif.}
+
+Le nombre d'ouvriers n'étant plus constant, nous allons rajouter deux variables par semaine pour modéliser le problème : $x_{s,emb}$, le nombre d'ouvriers embauchés au début de la semaine s et $x_{s,lic}$, le nombre d'ouvriers licienciés au début de la semaine s. Dans la fonction objectif, il faut maintenant tenir compte du cout de ces recrutements et ces licenciements ainsi que du coût du salaire des ouvriers, non constant. \\
+En ce qui concerne les contraintes, il faut modifier celles sur le nombre de smartphones maximum produits dans l'entreprise. Il faut également ajouter les contraintes correspondants au nombre d'ouvriers (maximum et minimum).
+
+\subsection*{Fonction objectif}
+\begin{multline*}
+  \mbox{minimiser } 
+  \sum_{s=1}^{T} 
+  c_m\, \xn + (c_m + d_{a,h} \, c_{hs})\, \xsup
+  + c_s\, \xstock + c_r\, \xretard + c_{sst}\, \xsst \\
+  + 35 \, c_{hor} \, (n_{ouv} + \sum_{i=1}^{s} x_{i,emb} - x_{i,lic}) 
+  + c_{emb} \, x_{s,emb} + c_{lic} \, x_{i,lic}
+\end{multline*}
+
+Le tableau~\ref{tab:constantesQuestion7} contient les nouvelles abréviations
+des constantes utilisées.
+\begin{table}[h]
+  \begin{center}
+  \begin{tabular}{|c|l|}
+    \hline
+    Paramètre & Constante représentée \\
+    \hline
+    \hline
+    $c_{hor}$ & \texttt{cout\_horaire} \\
+    \hline
+    $n_{ouv}$ & \texttt{nb\_ouvriers} \\
+    \hline
+    $c_{emb}$ & \texttt{cout\_embauche} \\
+    \hline
+    $c_{lic}$ & \texttt{cout\_licenciement} \\
+    \hline
+  \end{tabular}
+  \caption{Constantes de la modélisation de la ligne d'assemblage.}
+  \label{tab:constantesQuestion7}
+  \end{center}
+\end{table}
+
+\subsection*{Contraintes}
+Voici les contraintes du problème de la planification 
+de la ligne d’assemblage à personnel variable.
+\begin{align*}
+  \Delta\xstock + \texttts{demande}(s) &= \xn + \xsup 
+  + \xretard + \xsst - \myX{s-1}{retard} &\forall s \\
+  \myX{0}{stock} &= \texttts{stock-initial} \\
+  \myX{T}{stock} &= \texttts{stock-initial} \\
+  \myX{T}{retard}&= 0 \\
+  \myX{s-1}{retard} + \Delta\xstock &\leq \xn + \xsup + \xsst &\forall s \\
+  \xn &\leq 35\cdot (n_{ouv} + \sum_{i=1}^{s} x_{i,emb} - x_{i,lic})/ d_{a,h}
+  &\forall s \\
+  \xsup &\leq \texttts{nb\_max\_heure\_sup}\cdot (n_{ouv} + \sum_{i=1}^{s} x_{i,emb} - x_{i,lic})/ d_{a,h}
+  &\forall s \\
+  \xsst &\leq \texttts{nb\_max\_sous\_traitant} &\forall s \\
+  n_{ouv} + \sum_{i=1}^{s} x_{i,emb} - x_{i,lic} &\leq \texttts{nb\_max\_ouvriers}  &\forall s \\
+  x_s &\geq 0 &\forall s
+\end{align*}
 
 \end{document}

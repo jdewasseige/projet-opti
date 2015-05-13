@@ -87,9 +87,15 @@ for i = 1:length(f)
 end
 options = optimoptions(@linprog, 'Algorithm', 'simplex');%Pour qu'il nous donne bien une sol entiere s'il y en a une
 
-reshape(linprog(f,A,b,Aeq,beq,lb,ub,zeros(size(f)),options),5,17)'
+dat = reshape(linprog(f,A,b,Aeq,beq,lb,ub,zeros(size(f)),options),5,17)';
 [x, fval] = linprog(f,A,b,Aeq,beq,lb,ub,zeros(size(f)),options);
-fval
+fval;
 % x0 ignore pour l'algorithm du simplexe
+
+f = figure('Position',[200 200 400 150]);
+cnames = {'X-Data','Y-Data','Z-Data', 'xsst', 'xret'};
+rnames = {'First','Second','Third', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15', '16', '18', '19', '20'};
+t = uitable('Parent',f,'Data',dat,'ColumnName',cnames,... 
+            'RowName',rnames,'Position',[200 200 360 100]);
 
 end
