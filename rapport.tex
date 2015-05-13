@@ -214,6 +214,13 @@ et calculez la solution correspondant aux données fournies sur icampus
 Commentez l'allure de la solution obtenue.}
 
 Notre implémentation se trouve dans le fichier \texttt{question3.m}.
+Il nous parait important d'expliquer en quelques mots le r\^ole
+de la fonction \texttt{kron}.
+Celle-ci effectue le produit tensoriel de Kronecker entre deux matrices.
+C'est-à-dire que pour \texttt{kron(A,B)},
+chaque élément de $A$ multiplie la matrice $B$.
+En l'utilisant de manière appropriée avec des matrices nulles et diagonales,
+on peut effectuer un remplissage des matrices des contraintes très efficace.
 
 \question %4
 \emph{Décrivez une procédure permettant, avec le moins de nouveaux calculs
@@ -225,22 +232,79 @@ où \texttt{delta\textunderscore demande} est un vecteur de perturbation
 sur la demande, 
 et \texttt{epsilon} est un paramètre scalaire dont la valeur est faible.}
 
-La perturbation d'une contrainte 
-Le problème dual nous donne de telles informations. 
-En effet, soit notre problème reformulé sous forme standard : \\
+Le dual du problème nous permet d'évaluer assez simplement
+les conséquences sur la fonction objectif
+d'une petite variation de la demande prévue.
+
+En effet, notre problème peut être simplifié sous la forme
 \begin{align*} 
-	\text{minimiser} c^Tx &\\
-	Ax &= b  \\
-	x &\geq 0 
+	\text{minimiser } c^T x \\
+	a_i^T x &= b_i  & i = 1,...,T,...,T+3 \\
+  a_i^T x &\leq b_i & i = T+4,...,end \\
+	x_j &\geq 0 & \forall j
 \end{align*}
-Une partie du vecteur b correspond exactement à la demande.
-Or, si $y_{*}$ est solution du dual de ce problème, la variation de la fonction objectif à une modification $\Delta b$ du vecteur $b$ sera exactement égal à $y_{*}^{T}\Delta b$. \\
-En particulier donc, si $\Delta b$ est égal à $$epsilon * delta\_demande$$ aux composantes de $b$ correspondant à la demande et 0 partout ailleurs, $y_{*}^{T}\Delta b$ nous donnera la variation de l'objectif causée par cette variation de la demande.
-%Besoin d'une 'preuve' mathématique ? Sachant que ce sera bcp du recopiage des slides...
+On obtient ensuite sa forme duale
+\begin{align*} 
+	\text{maximiser } b^T y \\
+	y_i &\text{ libre} & i = 1,...,T,...,T+3 \\
+  y_i &\leq 0 & i = T+4,...,end \\
+  A_j^T y &\leq c_j & \forall j
+\end{align*}
+
+%Une partie du vecteur $b$ (et plus précisement les $T$ premiers éléments)
+%correspond à la demande.
+On remarque qu'une perturbation des contraintes dans le problème primal
+correspond à une perturbation de la fonction objectif dans le problème dual.
+Il nous suffit donc simplement de calculer une solution optimale du dual $y^{*}$
+puis d'effectuer le produit scalaire
+\[ \Delta z^{*} = (\Delta b)^T y^{*} \]
+pour chaque perturbation $\Delta b$ pour conna\^itre l'impact $\Delta z^{*}$
+sur le cout.
 
 \question %5
+\emph{Testez sous MATLAB la procédure du point précédent avec les données
+fournies. Comparez ensuite la prédiction obtenue par cette procédure
+avec la valeur obtenue en résolvant à nouveau complètement le modèle,
+et ce pour un échantillon de valeurs du paramètre \texttt{epsilon} comprises
+entre $0$ et $1$ (par exemple \texttt{0:.1:1}). 
+Commentez (éventuellement en vous aidant d'un graphique).}
+
+Comparaison À FAIRE.
+
+Notre fonction \texttt{compareDuality.m} permet de prouver l'efficacité
+du problème dual lorsqu'on perturbe le vecteur des contraintes.
+En effet, si l'on décide d'analyser via le problème primal ce qu'il 
+se passe lorsque les contraintes sont modifiées, il est nécessaire de 
+résoudre le problème à chaque perturbation 
+(plusieurs appels à \texttt{linprog}).
+Tandis que pour le problème dual,
+il suffit d'effectuer plusieurs combinaisons linéaires de la fonction objectif
+avec \emph{une seule} solution $y^{*}$ 
+(c'est-à-dire un apppel à \texttt{linprog}).
+On retrouve les résultats des tests d'efficacité
+sur le graphe de la figure~\ref{fig:efficiencyDual}.
+\begin{figure}
+  \begin{center}
+    \includegraphics[scale=0.7]{img/efficiencyDual.eps}
+    \caption{Comparaison de l'efficacité du primal et dual lors de
+    l'analyse de perturbations sur les contraintes.}
+    \label{fig:efficiencyDual}
+  \end{center}
+\end{figure}
 
 \question %6
+\emph{Décrivez (sans l'implémenter) l'adaptation qu'il serait nécessaire à
+apporter au modèle si le coût de l'heure supplémentaire pris en compte était
+variable. Plus concrètement, considérez qu'après la première heure
+supplémentaire (facturée au coût horaire \texttt{cout\textunderscore
+heure\textunderscore sup} standard), chaque heure supplémentaire
+(éventuellement) est facturée à un coût horaire supérieur de $5 \%$ 
+à celui de l'heure supplémentaire précédente. 
+Est-il toujours possible de formuler (ou reformuler) 
+le problème sous forme linéaire ? Expliquez. 
+Et que se passerait-il si le coût horaire des supplémentaires \emph{diminuait}
+lorsque le nombre d'heure prestées augmente ? Justifiez.}
+
 Si le coût des heures supplémentaires augmentent, la fonction objectif devient 
 \[
   \mbox{minimiser } 
@@ -249,5 +313,12 @@ Si le coût des heures supplémentaires augmentent, la fonction objectif devient
   + c_s\, \xstock + c_r\, \xretard + c_{sst}\, \xsst
 \]
 avec $c_{hs, n} = c_{hs, 0} \, \sum_{i=0}^{\xsup \, d_{a, h}} (0.05)^{i} \, {\xsup \, d_{a,h} -1 \choose i}$. Ce modèle n'est plus linéaire.
+
+\question %7
+\emph{Donnez à présent une formulation linéaire (continue, sans variables
+entières) du problème de la planification de la ligne d'assemblage
+incluant le gestion du personnel, en vous basant sur le modèle déjà 
+construit à la Question 1. Décrivez successivement variables, 
+contraintes et fonction objectif.}
 
 \end{document}
