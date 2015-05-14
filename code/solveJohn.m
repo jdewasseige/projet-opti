@@ -77,7 +77,7 @@ options = optimoptions(@linprog, 'Algorithm', 'simplex');
 
 [X,cout] = linprog(f,A,b,Aeq,beq,lb,ub,zeros(size(f)),options);
 
-cout = cout + 35*d.nb_ouvriers*d.cout_horaire
+cout = cout + T*35*d.nb_ouvriers*d.cout_horaire;
 %% affichage de la solution et du cout
 X = reshape(X,L,T+1)';
 

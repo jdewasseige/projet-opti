@@ -28,29 +28,24 @@ f = getObjectif(T,d);
 L = 5; % taille de x_s
 
 %% contraintes d'egalite
-
 [Aeq,beq] = getEqConstraints(T,d);
 
 %% contraintes d'inegalite
-
 [A,b] = getIneqConstraints(T,d);
 
 %% bornes
-
 lb = zeros(size(f));
 ub = [];
 
 %% solveur
-
 % simplex pour une solution entiere s'il y en a une
 options = optimoptions(@linprog, 'Algorithm', 'simplex');
 
 [X,cout] = linprog(f,A,b,Aeq,beq,lb,ub,zeros(size(f)),options);
 
-cout = cout + 35*d.nb_ouvriers*d.cout_horaire
+cout = cout + T*35*d.nb_ouvriers*d.cout_horaire
 
 %% affichage 
-
 X = reshape(X,L,T+1)';
 
 if nargin <2 || printInfos
