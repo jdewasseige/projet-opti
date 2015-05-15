@@ -286,6 +286,11 @@ puis d'effectuer le produit scalaire
 pour chaque perturbation $\Delta b$ pour conna\^itre l'impact $\Delta z^{*}$
 sur le cout.
 
+Ce résultat n'est valable que pour des petites variations de b.
+En effet, pour l'obtenir, il faut supposer que l'on connaît un sommet optimal admissible.
+Or, en changeant le problème, il n'est pas garanti que ce sommet reste optimal et admissible. 
+Plus la perturbation est importante, plus il y a de chances que notre sommet optimal change.
+
 \question %5
 \emph{Testez sous MATLAB la procédure du point précédent avec les données
 fournies. Comparez ensuite la prédiction obtenue par cette procédure
@@ -307,7 +312,11 @@ il suffit d'effectuer plusieurs combinaisons linéaires de la fonction objectif
 avec \emph{une seule} solution $y^{*}$ 
 (c'est-à-dire un apppel à \texttt{linprog}).
 On retrouve les résultats des tests d'efficacité
-sur le graphe de la figure~\ref{fig:efficiencyDual}.
+sur le graphe de la figure~\ref{fig:efficiencyDual}. 
+
+Cependant, comme expliqué dans la section précédente, ce résultat n'est valable que pour des petites variations des contraintes.
+Si \texttt{epsilon} devient trop grand, l'analyse par le primal pourrait diverger de la solution du primal.
+C'est ce que nous obtenons en implémentant ces deux méthodes, comme représenté à la figure \ref{fig:responseToPerturbations}
 
 \begin{figure}
   \begin{center}
