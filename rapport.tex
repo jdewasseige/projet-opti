@@ -120,6 +120,18 @@ des constantes utilisées.
   \end{center}
 \end{table}
 
+On remarquera que le terme associé au cout des heures normales des ouvriers
+a été omis dans la fonction objectif puisqu'il n'est pas nécessaire.
+En effet, les ouvriers ne sont pas payés en fonction du nombre
+d'heures qu'ils travaillent réellement mais bien à la semaine et 
+donc pour un nombre d'heures constant.
+Ceci correspond au terme $35\cdot\texttt{cout\_horaire}\cdot
+\texttt{nb\_ouvriers}$ qu'il est impossible de minimiser.
+Cela n'aura donc pas d'impact sur notre solution,
+il faudra seulement modifier le cout final de la manière suivante
+\[ \text{cout} \leftarrow \text{cout} + T \cdot 35 \cdot\texttt{cout\_horaire}\cdot
+\texttt{nb\_ouvriers} \]
+
 A ce stade, le fait de ne pas imposer l'intégralité des variables
 parait problèmatique dans le sens où les solutions ne sont pas 
 garanties d'être entières. Ce qui n'est pas envisageable 
@@ -207,7 +219,7 @@ Si les demandes $b_i$ et les capcités $h_{ij}$ d'un problème de flot de coût 
 
 \begin{figure}[H]
 	\centering
-		\includegraphics[scale = 0.5]{Schema_flot.png}
+		\includegraphics[scale = 0.5]{img/Schema_flot.png}
 	\caption{Schéma représentant le graphe utilisé pour définir 
   le problème de flot de coût minimal.}
 	\label{fig:schemaFlot}
@@ -241,7 +253,7 @@ On commence également à avoir recours au retard.
 
 \begin{figure}[H]
   \begin{center}
-    \includegraphics[scale = 0.8]{grapheProduction.png}
+    \includegraphics[scale = 0.8]{img/grapheProduction.png}
 	  \caption{Répartition du moyen de production des smartphones en fonction des semaines.}
 	  \label{fig:grapheProduction}
   \end{center}
@@ -264,15 +276,15 @@ d'une petite variation de la demande prévue.
 En effet, notre problème peut être simplifié sous la forme
 \begin{align*} 
 	\text{minimiser } c^T x \\
-	a_i^T x &= b_i  & i = 1,...,T,...,T+3 \\
-  a_i^T x &\leq b_i & i = T+4,...,end \\
+	a_i^T x &= b_i  & i = 1,...,T,...,T+7 \\
+  a_i^T x &\leq b_i & i = T+8,...,end \\
 	x_j &\geq 0 & \forall j
 \end{align*}
 On obtient ensuite sa forme duale
 \begin{align*} 
 	\text{maximiser } b^T y \\
-	y_i &\text{ libre} & i = 1,...,T,...,T+3 \\
-  y_i &\leq 0 & i = T+4,...,end \\
+	y_i &\text{ libre} & i = 1,...,T,...,T+7 \\
+  y_i &\leq 0 & i = T+8,...,end \\
   A_j^T y &\leq c_j & \forall j
 \end{align*}
 
