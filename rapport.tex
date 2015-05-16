@@ -240,6 +240,9 @@ chaque élément de $A$ multiplie la matrice $B$.
 En l'utilisant de manière appropriée avec des matrices nulles et diagonales,
 on peut effectuer un remplissage des matrices des contraintes très efficace. 
 
+Un exemple d'utilisation de cette fonction pour remplir la matrice
+des contraintes se trouve dans l'annexe~\ref{app:kron}.
+
 Les résultats obtenus sont représentés graphiquement 
 à la figure~\ref{fig:grapheProduction}. 
 Comme on pouvait s'y attendre, la solution optimale utilise presque chaque
@@ -474,5 +477,8 @@ de la ligne d’assemblage à personnel variable.
   n_{ouv} + \sum_{i=1}^{s} x_{i,emb} - x_{i,lic} &\leq \texttts{nb\_max\_ouvriers}  &\forall s \\
   x_s &\geq 0 &\forall s
 \end{align*}
+
+\appendix
+\input{./explicationKron}
 
 \end{document}

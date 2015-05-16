@@ -1,0 +1,75 @@
+\section{Utilisation de la fonction \texttt{kron}}
+\label{app:kron}
+
+\lstset{language=MATLAB}
+
+Afin de comprendre l'utilité et l'efficacité de la fonction \texttt{kron},
+voici son application pour la contrainte
+\[ 
+  \Delta\xstock + \texttts{demande}(s) = \xn + \xsup 
+  + \xretard + \xsst - \myX{s-1}{retard} \qquad \forall s
+\]
+pour une planification sur deux semaines ($T=2$).
+
+Voici le code correspondant
+\begin{lstlisting}
+  dSeg   = [1 1 -1 1 1];
+  dpSeg  = [0 0 1 -1 0];
+  Aeq = [kron([eye(T),zeros(T,1)],dpSeg) ...
+       + kron([zeros(T,1),eye(T)],dSeg)];
+  beq = [d.demande'];   
+\end{lstlisting}
+
+Rappelons la forme de notre vecteur $x_s$
+\[ x_s = 
+  \begin{pmatrix} 
+    \xn &\xsup &\xstock &\xretard &\xsst
+  \end{pmatrix}^T.
+\]
+
+Nous avons tout d'abord la matrice créée à la ligne $3$
+\[
+    \left(
+    \begin{array}{*{15}c}
+      0 & 0 & 1 & -1 & 0 & 0 & 0 &  0 & 0 & 0 & 0 & 0 & 0 & 0 & 0 \\
+      0 & 0 & 0 &  0 & 0 & 0 & 0 & -1 & 1 & 0 & 0 & 0 & 0 & 0 & 0 
+    \end{array}
+    \right),
+\]
+
+ensuite celle créée à la ligne $4$
+\[
+    \left(
+    \begin{array}{*{15}c}
+      0 & 0 & 0 & 0 & 0 & 1 & 1 & -1 & 1 & 1 & 0 & 0 & 0 & 0 & 0 \\
+      0 & 0 & 0 & 0 & 0 & 0 & 0 &  0 & 0 & 0 & 1 & 1 & -1 & 1 & 1 
+    \end{array}
+    \right).
+\]
+
+Cela donne comme voulu
+\[
+    \left(
+    \begin{array}{*{15}c}
+      0 & 0 & 1 & -1 & 0 & 1 & 1 & -1 & 1 & 1 & 0 & 0 &  0 & 0 & 0 \\
+      0 & 0 & 0 &  0 & 0 & 0 & 0 & -1 & 1 & 0 & 1 & 1 & -1 & 1 & 1 
+    \end{array}
+    \right)
+    \left(
+    \begin{array}{*{1}l}
+      \myX{0}{n}\\ \myX{0}{sup}\\ \myX{0}{stock}\\ \myX{0}{retard}\\ \myX{0}{sst}\\
+      \myX{1}{n}\\ \myX{1}{sup}\\ \myX{1}{stock}\\ \myX{1}{retard}\\ \myX{1}{sst}\\
+      \myX{2}{n}\\ \myX{2}{sup}\\ \myX{2}{stock}\\ \myX{2}{retard}\\ \myX{2}{sst}
+    \end{array}
+    \right)
+    = 
+    \left(
+    \begin{array}{*{1}l}
+      \texttts{demande}(1) \\ \texttts{demande}(2)
+    \end{array}
+    \right)
+    \text.
+\]
+
+Cette méthode s'avère simple et efficace puisque ces $5$ lignes de code suffisent 
+à remplir notre matrice peu importe le nombre de semaines.
