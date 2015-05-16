@@ -70,7 +70,8 @@ compareDualityValues
     newObj = f_dual;
     for i=1:n
         newObj(1:d.T) = f_dual(1:d.T) + epsilon(i)*d.delta_demande' ;
-        couts(i) = newObj'*x_dual + d.T*35*d.nb_ouvriers*d.cout_horaire;
+        couts(i) = newObj'*x_dual - d.stock_initial*d.cout_stockage ...
+            + d.T*35*d.nb_ouvriers*d.cout_horaire;
         fprintf('cout dual = %d \n',couts(i));
     end
     

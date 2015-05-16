@@ -43,7 +43,7 @@ dSeg   = [1 1 -1 1 1];
 dpSeg  = [0 0 1 -1 0];
 
 Aeq = [kron([eye(T),zeros(T,1)],dpSeg) + kron([zeros(T,1),eye(T)],dSeg);
-    kron([1,zeros(1,T)],eye(5));
+    kron([1,zeros(1,T)],eye(L));
     zeros(1,L*(T)), to.Stock; zeros(1,L*(T)),to.Retard];
 beq = [d.demande';zeros(2,1);d.stock_initial;zeros(2,1);
     d.stock_initial;0];
@@ -77,7 +77,8 @@ options = optimoptions(@linprog, 'Algorithm', 'simplex');
 
 [X,cout] = linprog(f,A,b,Aeq,beq,lb,ub,zeros(size(f)),options);
 
-cout = cout + T*35*d.nb_ouvriers*d.cout_horaire;
+cout = cout - d.stock_initial*d.cout_stockage ...
+    + T*35*d.nb_ouvriers*d.cout_horaire;
 %% affichage de la solution et du cout
 X = reshape(X,L,T+1)';
 

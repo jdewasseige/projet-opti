@@ -38,6 +38,7 @@ ub_dual = [inf(meq,1);zeros(m,1)];
 options = optimoptions(@linprog, 'Algorithm', 'simplex');
 [x, fval] = linprog(-f_dual, A_dual, b_dual,...
     [], [], [], ub_dual);
-realVal = f_dual'*x + T*35*d.nb_ouvriers*d.cout_horaire;
+realVal = f_dual'*x - d.stock_initial*d.cout_stockage ...
+    + T*35*d.nb_ouvriers*d.cout_horaire;
 
 end
