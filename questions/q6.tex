@@ -1,0 +1,45 @@
+\question %6
+\emph{Décrivez (sans l'implémenter) l'adaptation qu'il serait nécessaire à
+apporter au modèle si le coût de l'heure supplémentaire pris en compte était
+variable. Plus concrètement, considérez qu'après la première heure
+supplémentaire (facturée au coût horaire \texttt{cout\textunderscore
+heure\textunderscore sup} standard), chaque heure supplémentaire
+(éventuellement) est facturée à un coût horaire supérieur de $5 \%$ 
+à celui de l'heure supplémentaire précédente. 
+Est-il toujours possible de formuler (ou reformuler) 
+le problème sous forme linéaire ? Expliquez. 
+Et que se passerait-il si le coût horaire des supplémentaires \emph{diminuait}
+lorsque le nombre d'heure prestées augmente ? Justifiez.}
+
+Si le coût des heures supplémentaires n'est plus constant mais augmente au fur et à mesure de leur utilisation, 
+le coût de celles-ci dépenderait directement du nombre de smartphones 
+produits de cette manière.
+
+En effet, on peut réécrire notre fonction objectif comme
+\[
+  \mbox{minimiser } 
+  \sum_{s=1}^{T} 
+  c_m\, \xn + c_m \, \xsup + \mathcal{C}_{hs} (\xsup)
+  + c_s\, \xstock + c_r\, \xretard + c_{sst}\, \xsst
+\]
+avec
+\[
+  \mathcal{C}_{hs} (\xsup) = \texttts{cout\_heure\_sup} \cdot
+  \sum_{i=0}^{\alpha} \binom{\alpha}{i} (0.05)^{i} 
+\]
+Par soucis de lisibilité, on a posé
+\[ \alpha = \xsup \, d_{a,h} - 1 \]
+$\alpha$ correspond donc au nombre d'heures supplémentaires qui auront
+un cout différent de \texttt{cout\_heure\_sup}.
+
+On remarque immédiatement que la fonction $\mathcal{C}_{hs}$
+est \emph{non-linéaire} en $\xsup$ puisque 
+\[ \binom{\alpha}{i} =\frac{\alpha !}{i!\,(\alpha-i)!} \]
+
+De même, si le coût des heures supplémentaires \emph{diminuait} 
+avec un taux de $0.05$,
+on aurait
+\[
+  c_{hs} (\xsup) = \texttts{cout\_heure\_sup} \cdot
+  \sum_{i=0}^{\alpha} (-1)^i(0.05)^{i} \,   \binom{\alpha}{i}
+\]
