@@ -29,7 +29,7 @@ au nombre d'ouvriers (maximum et minimum).
   \sum_{s=1}^{T} 
   c_m\, \xn &+ (c_m + d_{a,h} \, c_{hs})\, \xsup
   + c_s\, \xstock + c_r\, \xretard + c_{sst}\, \xsst \\
-  &+ 35 \, c_{h} \, (\nouv + \nemb - \nlic)  
+  &+ 35 \, c_{h} \, \nouv 
   + c_{emb} \, \nemb + c_{lic} \, \nlic
 \end{align*}
 
@@ -61,19 +61,23 @@ de la ligne d’assemblage à personnel variable.
 \begin{align*}
   \Delta\xstock + \texttts{demande}(s) &= \xn + \xsup 
   + \xretard + \xsst - \myX{s-1}{retard} &\forall s \\
+  \Delta\nouv &= \nemb - \nlic &\forall s \\
   \myX{0}{n}&= 0 \\
   \myX{0}{sup}&= 0 \\
-  \myX{0}{stock} &= \texttts{stock-initial} \\
+  \myX{0}{stock}&= \texttts{stock\_initial} \\
   \myX{0}{retard}&= 0 \\
   \myX{0}{sst}&= 0 \\
-  \myX{T}{stock} &= \texttts{stock-initial} \\
+  \myN{0}{ouv}&= \texttts{nb\_ouvriers} \\
+  \myN{0}{emb}&= 0 \\
+  \myN{0}{lic}&= 0 \\
+  \myX{T}{stock}&= \texttts{stock\_initial} \\
   \myX{T}{retard}&= 0 \\
   \myX{s-1}{retard} + \Delta\xstock &\leq \xn + \xsup + \xsst &\forall s \\
-  \xn &\leq 35\cdot (\nouv + \nemb - \nlic)/ d_{a,h}
+  \xn &\leq 35\cdot \nouv / d_{a,h}
   &\forall s \\
-  \xsup &\leq \texttts{nb\_max\_heure\_sup}\cdot (\nouv + \nemb - \nlic)/ d_{a,h}
+  \xsup &\leq \texttts{nb\_max\_heure\_sup}\cdot \nouv / d_{a,h}
   &\forall s \\
   \xsst &\leq \texttts{nb\_max\_sous\_traitant} &\forall s \\
-  \nouv + \nemb - \nlic &\leq \texttts{nb\_max\_ouvriers}  &\forall s \\
-  x_s &\geq 0 &\forall s
+  \nouv &\leq \texttts{nb\_max\_ouvriers}  &\forall s \\
+  x_s, n_s&\geq 0 &\forall s
 \end{align*}
