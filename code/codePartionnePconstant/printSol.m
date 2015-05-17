@@ -1,6 +1,6 @@
 function printSol(X)
 
-[M,N] = size(X)
+[M,N] = size(X);
 
 fprintf('\nSemaine\t x_n\t x_sup\t x_st\t x_ret\tx_sst');
 for i=1:M
