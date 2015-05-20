@@ -1,6 +1,6 @@
-function [cout,X] = solvePrimal(donnees,printInfos)
-%SOLVEPRIMAL - Implementation et solution du modele lineaire continu de 
-%            la ligne d'assemblage simple (personnel constant).
+function [cout,X] = solve(donnees,printInfos)
+%SOLVE - Implementation et solution du modele lineaire continu de 
+%            la ligne d'assemblage personnel variable.
 
 % input    - donnees : si aucun vecteur de donnees n'est utilise en
 %                      argument, alors on utilise le fichier 'donnees.mat'
