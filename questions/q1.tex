@@ -1,8 +1,8 @@
 \question %1
-\emph{Donnez une formulation linéaire (continue, sans variables entières) 
+\emph{Donnez une formulation linéaire (continue, sans variables entières)
 du problème de la planification de la ligne d'assemblage à personnel constant.
-Décrivez successivement variables, contraintes et fonction objectif. 
-A ce stade, le fait de ne pas imposer l'intégralité des variables 
+Décrivez successivement variables, contraintes et fonction objectif.
+A ce stade, le fait de ne pas imposer l'intégralité des variables
 vous parait-il problématique ?}
 
 \subsection*{Variables}
@@ -34,11 +34,11 @@ avec la caractéristique $\lambda$.
 \end{table}
 
 \subsection*{Contraintes}
-Voici les contraintes du problème de la planification 
+Voici les contraintes du problème de la planification
 de la ligne d’assemblage à personnel constant.
 On pose que $\Delta x_{s,\lambda} = x_{s,\lambda} - x_{s-1,\lambda}$.
 \begin{align*}
-  \Delta\xstock + \texttts{demande}(s) &= \xn + \xsup 
+  \Delta\xstock + \texttts{demande}(s) &= \xn + \xsup
   + \xretard + \xsst - \myX{s-1}{retard} &\forall s \\
   \myX{0}{n}&= 0 \\
   \myX{0}{sup}&= 0 \\
@@ -58,8 +58,8 @@ On pose que $\Delta x_{s,\lambda} = x_{s,\lambda} - x_{s-1,\lambda}$.
 
 \subsection*{Fonction objectif}
 \[
-  \mbox{minimiser } 
-  \sum_{s=1}^{T} 
+  \mbox{minimiser }
+  \sum_{s=1}^{T}
   c_m\, \xn + (c_m + d_{a,h} \, c_{hs})\, \xsup
   + c_s\, \xstock + c_r\, \xretard + c_{sst}\, \xsst
 \]
@@ -93,7 +93,7 @@ des constantes utilisées.
 On remarquera que le terme associé au cout des heures normales des ouvriers
 a été omis dans la fonction objectif puisqu'il n'est pas nécessaire.
 En effet, les ouvriers ne sont pas payés en fonction du nombre
-d'heures qu'ils travaillent réellement mais bien à la semaine et 
+d'heures qu'ils travaillent réellement mais bien à la semaine et
 donc pour un nombre d'heures constant.
 Ceci correspond au terme $35\cdot\texttt{cout\_horaire}\cdot
 \texttt{nb\_ouvriers}$ qu'il est impossible de minimiser.
@@ -103,9 +103,9 @@ il faudra seulement modifier le cout final de la manière suivante
 \texttt{nb\_ouvriers} \]
 
 A ce stade, le fait de ne pas imposer l'intégralité des variables
-parait problèmatique dans le sens où les solutions ne sont pas 
-garanties d'être entières. Ce qui n'est pas envisageable 
+parait problèmatique dans le sens où les solutions ne sont pas
+garanties d'être entières. Ce qui n'est pas envisageable
 vu que celles-ci représentent des quantités de smartphones.
-Par exemple, 
+Par exemple,
 $\xn$ ne sera probablement pas entier si $1/d_{a,h}$ ne l'est pas.
-% TODO autre mot que problablement ? "il est possible que" 
+% TODO autre mot que problablement ? "il est possible que"

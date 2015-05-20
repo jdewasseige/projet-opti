@@ -2,10 +2,10 @@
 \emph{Décrivez une procédure permettant, avec le moins de nouveaux calculs
 possibles, d'évaluer les conséquences sur la fonction objectif d’une petite
 variation de la demande prévue. Plus précisément, analysez l'effet du
-remplacement du vecteur \texttt{demande} 
-par le vecteur \texttt{demande + epsilon * delta\textunderscore demande} 
-où \texttt{delta\textunderscore demande} est un vecteur de perturbation 
-sur la demande, 
+remplacement du vecteur \texttt{demande}
+par le vecteur \texttt{demande + epsilon * delta\textunderscore demande}
+où \texttt{delta\textunderscore demande} est un vecteur de perturbation
+sur la demande,
 et \texttt{epsilon} est un paramètre scalaire dont la valeur est faible.}
 
 Le dual du problème nous permet d'évaluer assez simplement
@@ -13,14 +13,14 @@ les conséquences sur la fonction objectif
 d'une petite variation de la demande prévue.
 
 En effet, notre problème peut être simplifié sous la forme
-\begin{align*} 
+\begin{align*}
 	\text{minimiser } c^T x \\
 	a_i^T x &= b_i  & i = 1,...,T,...,T+7 \\
   a_i^T x &\leq b_i & i = T+8,...,end \\
 	x_j &\geq 0 & \forall j
 \end{align*}
 On obtient ensuite sa forme duale
-\begin{align*} 
+\begin{align*}
 	\text{maximiser } b^T y \\
 	y_i &\text{ libre} & i = 1,...,T,...,T+7 \\
   y_i &\leq 0 & i = T+8,...,end \\
@@ -39,5 +39,5 @@ sur le cout.
 
 Ce résultat n'est valable que pour des petites variations de b.
 En effet, pour l'obtenir, il faut supposer que l'on connaît un sommet optimal admissible.
-Or, en changeant le problème, il n'est pas garanti que ce sommet reste optimal et admissible. 
+Or, en changeant le problème, il n'est pas garanti que ce sommet reste optimal et admissible.
 Plus la perturbation est importante, plus il y a de chances que notre sommet optimal change.
