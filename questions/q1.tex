@@ -37,32 +37,37 @@ avec la caractéristique $\lambda$.
 Voici les contraintes du problème de la planification
 de la ligne d’assemblage à personnel constant.
 On pose que $\Delta x_{s,\lambda} = x_{s,\lambda} - x_{s-1,\lambda}$.
+Voici les contraintes du problème de la planification 
+de la ligne d’assemblage à personnel constant, $s$ étant un naturel allant de $1$ à $T$.
+% J'ai retiré
+%  \myX{0}{n}&= 0 \\
+% \myX{0}{sup}&= 0 \\
+% \myX{0}{sst}&= 0 \\
+% Puisque s va de 1 à T
 \begin{align*}
   \Delta\xstock + \texttts{demande}(s) &= \xn + \xsup
-  + \xretard + \xsst - \myX{s-1}{retard} &\forall s \\
-  \myX{0}{n}&= 0 \\
-  \myX{0}{sup}&= 0 \\
-  \myX{0}{stock}&= \texttts{stock\_initial} \\
-  \myX{0}{retard}&= 0 \\
-  \myX{0}{sst}&= 0 \\
-  \myX{T}{stock}&= \texttts{stock\_initial} \\
+   + \xsst + \Delta\xretard &\forall s \\
+  \myX{T}{stock} &= \texttts{stock\_initial} \\
   \myX{T}{retard}&= 0 \\
-  \myX{s-1}{retard} + \Delta\xstock &\leq \xn + \xsup + \xsst &\forall s \\
+  \myX{s-1}{retard} + \Delta\xstock &\leq \xn + \xsup + \xsst \text{\footnotemark} &\forall s \\
   \xn &\leq 35\cdot \texttts{nb\_ouvriers}/ d_{a,h}
   &\forall s \\
   \xsup &\leq \texttts{nb\_max\_heure\_sup}\cdot\texttts{nb\_ouvriers}/ d_{a,h}
   &\forall s \\
   \xsst &\leq \texttts{nb\_max\_sous\_traitant} &\forall s \\
-  x_s &\geq 0 &\forall s
+  x_{s,\lambda} &\geq 0 &\forall s,\lambda \\
 \end{align*}
+\footnotetext{Pour limiter les retards à une seule semaine.}
 
 \subsection*{Fonction objectif}
+\[ \text{minimiser } \text{coût}_\text{tot} = \sum_{s=1}^{T} \text{coût}(s) \]
+
+où coût$(s)$ est le coût pour la semaine $s$ et vaut
 \[
-  \mbox{minimiser }
-  \sum_{s=1}^{T}
   c_m\, \xn + (c_m + d_{a,h} \, c_{hs})\, \xsup
-  + c_s\, \xstock + c_r\, \xretard + c_{sst}\, \xsst
+  + c_s\, \xstock + c_r\, \xretard + c_{sst}\, \xsst.
 \]
+
 Le tableau~\ref{tab:constantesQuestion1} contient les abréviations
 des constantes utilisées.
 \begin{table}[h]
@@ -82,7 +87,7 @@ des constantes utilisées.
     \hline
     $c_{sst}$ & \texttt{cout\_sous\_traitant} \\
     \hline
-    $d_{a,h}$ & \texttt{duree\_assemblage}/60 \\
+    $d_{a,h}$ & \texttt{duree\_assemblage}/60, [heures] \\
     \hline
   \end{tabular}
   \caption{Constantes de la modélisation de la ligne d'assemblage simple.}
@@ -90,7 +95,7 @@ des constantes utilisées.
   \end{center}
 \end{table}
 
-On remarquera que le terme associé au cout des heures normales des ouvriers
+On remarquera que le terme associé au coût des heures normales des ouvriers
 a été omis dans la fonction objectif puisqu'il n'est pas nécessaire.
 En effet, les ouvriers ne sont pas payés en fonction du nombre
 d'heures qu'ils travaillent réellement mais bien à la semaine et
@@ -98,14 +103,13 @@ donc pour un nombre d'heures constant.
 Ceci correspond au terme $35\cdot\texttt{cout\_horaire}\cdot
 \texttt{nb\_ouvriers}$ qu'il est impossible de minimiser.
 Cela n'aura donc pas d'impact sur notre solution,
-il faudra seulement modifier le cout final de la manière suivante
-\[ \text{cout} \leftarrow \text{cout} + T \cdot 35 \cdot\texttt{cout\_horaire}\cdot
+il faudra seulement modifier le coût total de la manière suivante
+\[ \text{coût}_\text{tot} \leftarrow \text{coût}_\text{tot} + T \cdot 35 \cdot\texttt{cout\_horaire}\cdot
 \texttt{nb\_ouvriers} \]
 
 A ce stade, le fait de ne pas imposer l'intégralité des variables
-parait problèmatique dans le sens où les solutions ne sont pas
-garanties d'être entières. Ce qui n'est pas envisageable
+parait problématique dans le sens où les solutions ne sont pas 
+garanties d'être entières. Ce qui n'est pas envisageable 
 vu que celles-ci représentent des quantités de smartphones.
-Par exemple,
-$\xn$ ne sera probablement pas entier si $1/d_{a,h}$ ne l'est pas.
-% TODO autre mot que problablement ? "il est possible que"
+Par exemple, il est possible que
+$\xn$ ne soit pas entier si $1/d_{a,h}$ ne l'est pas.
