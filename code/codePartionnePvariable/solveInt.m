@@ -1,4 +1,4 @@
-function [cout,X] = solve(donnees,printInfos)
+function [cout,X] = solveInt(donnees,printInfos)
 %SOLVE - Implementation et solution du modele lineaire continu de 
 %            la ligne d'assemblage personnel variable.
 
