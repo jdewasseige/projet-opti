@@ -1,6 +1,5 @@
-function [cout,X] = solve(donnees,printInfos)
-%SOLVE - Implementation et solution du modele lineaire continu de 
-%            la ligne d'assemblage personnel variable.
+function [cout,X] = solve(d,L)
+%SOLVE - Implementation et solution du modele lineaire continu.
 
 % input    - donnees : si aucun vecteur de donnees n'est utilise en
 %                      argument, alors on utilise le fichier 'donnees.mat'
@@ -12,26 +11,18 @@ function [cout,X] = solve(donnees,printInfos)
 %                      [x_normal x_suplementaire x_stock x_retard x_sst]
 %          - fval  : valeur du cout optimal
 
-%% load data, fonction objectif et constantes
-if nargin==0
-    d = importdata('donnees.mat');
-else
-    d = donnees;
-end
+%% fonction objectif et constantes
 
 T = d.T; % nombre de semaines
 
 % fonction objectif 
-f = getObjectif(T,d);
-
-% vecteur x_s = [x_n x_sup x_stock x_retard x_sst]'
-L = 8; % taille de x_s
+f = getObjectif(T,d,L);
 
 %% contraintes d'egalite
-[Aeq,beq] = getEqConstraints(T,d);
+[Aeq,beq] = getEqConstraints(T,d,L);
 
 %% contraintes d'inegalite
-[A,b] = getIneqConstraints(T,d);
+[A,b] = getIneqConstraints(T,d,L);
 
 %% bornes
 lb = zeros(size(f));
@@ -43,16 +34,7 @@ options = optimoptions(@linprog, 'Algorithm', 'simplex');
 
 [X,cout] = linprog(f,A,b,Aeq,beq,lb,ub,zeros(size(f)),options);
 
-cout = cout - 35*d.nb_ouvriers*d.cout_horaire ...
-    - d.stock_initial*d.cout_stockage ;
-
-%% affichage 
 X = reshape(X,L,T+1)';
 
-if nargin <2 || printInfos
-    printSol(X);
-    %printmat(X)
-    fprintf('\n\nLe cout total vaut %d.\n',cout);
-end
 
 end
