@@ -13,25 +13,14 @@ function [cout,X] = solveInt(d,L)
 %                       n_ouv n_emb n_lic]
 %          - fval  : valeur du cout optimal
 
-%% fonction objectif et constantes
 
-T = d.T; % nombre de semaines
-
-% fonction objectif 
-f = getObjectif(T,d,L);
-
-%% contraintes d'egalite
-[Aeq,beq] = getEqConstraints(T,d,L);
-
-%% contraintes d'inegalite
-[A,b] = getIneqConstraints(T,d,L);
-
-%% bornes
-lb = zeros(size(f));
-ub = [];
+[f,A,b,Aeq,beq,lb,ub] = getSolveInfos(d,L);
 
 %% solveur
 intcon = 1:1:length(f);
+
 [X,cout] = intlinprog(f,intcon,A,b,Aeq,beq,lb,ub);
+
+X = reshape(X,L,d.T+1)';
 
 end
