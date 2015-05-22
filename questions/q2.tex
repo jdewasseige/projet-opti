@@ -1,3 +1,11 @@
+\begin{figure}[H]
+	\centering
+		\includegraphics[scale = 0.7, angle = 90]{img/Schema_flot.png}
+	\caption{Schéma représentant le graphe utilisé pour définir 
+  le problème de flot de coût minimal.}
+	\label{fig:schemaFlot}
+\end{figure}
+
 \question %2
 \emph{Démontrez que, sous certaines hypothèses raisonnables, 
 il est possible de garantir que votre modèle linéaire continu admette toujours
@@ -21,20 +29,12 @@ Pour le prouver, nous allons reformuler notre problème sous la forme d'un probl
 Soit le graphe orienté $G(V,E)$, 
 où $V$ représente l'ensemble des noeuds et $E$ l'ensemble des arêtes.
 Il est utile à ce stade de s'aider d'un schéma représentant le graphe. 
-Celui-ci est repris à la figure~\ref{fig:schemaFlot}.
+Celui-ci est repris à la figure~\ref{fig:schemaFlot} page \pageref{fig:schemaFlot}.
 $V$ compte un noeud pour chaque semaine et un noeud initial.
 On a donc $V := {0, 1, 2, ..., T}$
 où $0$ est le noeud initial et $s$ est le noeud de la semaine $s$.
 Définissons maintenant les arêtes de notre graphe.
 Pour le noeud $0$, on définit\footnote{Notations : $V^{-}(s)$ désigne l'ensemble des noeuds dont l'arête ``rentre'' dans le noeud s, à l'inverse $V^{+}(s)$ désigne les ``sortants''.}
-
-\begin{figure}[h]
-	\centering
-		\includegraphics[scale = 0.7, angle = 90]{img/Schema_flot.png}
-	\caption{Schéma représentant le graphe utilisé pour définir 
-  le problème de flot de coût minimal.}
-	\label{fig:schemaFlot}
-\end{figure}
 
 \[ V^{+}(0) = \{s_1, s_2, s_3 \quad \forall s \ne 0\} \]
 avec
