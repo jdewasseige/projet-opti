@@ -1,16 +1,15 @@
 function [f,A,b,Aeq,beq,lb,ub] = getSolveInfos(d,L)
 
-
-% fonction objectif 
+% Fonction objectif 
 f = getObjectif(d,L);
 
-% contraintes d'egalite
+% Contraintes d'egalite
 [Aeq,beq] = getEqConstraints(d,L);
 
-% contraintes d'inegalite
+% Contraintes d'inegalite
 [A,b] = getIneqConstraints(d,L);
 
-% bornes
+% Bornes
 lb = zeros(size(f));
 ub = [];
 

@@ -2,10 +2,9 @@ function [Aeq,beq] = getEqConstraints(d,L)
 
 to = getToX(L);
 
-if L==5
-% personnel constant
+if L==5  % Personnel constant
 
-    % vecteurs qui multiplient x_s et x_s-1 pour la contrainte 1
+    % Vecteurs qui multiplient x_s et x_s-1 pour la contrainte 1
     dSeg   = [1 1 -1 1 1];
     dpSeg  = [0 0 1 -1 0];
 
@@ -15,14 +14,13 @@ if L==5
     beq = [d.demande';zeros(2,1);d.stock_initial;zeros(2,1);
         d.stock_initial;0];
     
-else  
-% personnel variable
+else  % Personnel variable
 
-    % vecteurs qui multiplient x_s et x_s-1 pour la contrainte 1
+    % Vecteurs qui multiplient x_s et x_s-1 pour la contrainte 1
     dSeg1   = [1 1 -1 1 1 0 0 0];
     dpSeg1  = [0 0 1 -1 0 0 0 0];
 
-    % vecteurs qui multiplient x_s et x_s-1 pour la contrainte 2
+    % Vecteurs qui multiplient x_s et x_s-1 pour la contrainte 2
     dSeg2   = [0 0 0 0 0 1 -1 1];
     dpSeg2  = [0 0 0 0 0 -1 0 0];
 

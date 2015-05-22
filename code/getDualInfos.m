@@ -2,14 +2,14 @@ function [cout,x,f_dual] = getDualInfos(d)
 %GETDUALINFOS - Analyse de l'effet de la modification de la demande sur la
 %fonction objectif.
 
-% vecteur x_s = [x_n x_sup x_stock x_retard x_sst]'
-L = 5; % taille de x_s
+% Vecteur x_s = [x_n x_sup x_stock x_retard x_sst]'
+L = 5; % Taille de x_s
 
-%% infos du primal
+%% Infos du primal
 
 [f_primal,A,b,Aeq,beq,~,~] = getSolveInfos(d,L);
 
-%% implementation dual
+%% Implementation dual
 [meq, neq] = size(Aeq);
 [m, n] = size(A);
 A_dual = [Aeq;A]';
@@ -17,8 +17,7 @@ b_dual = f_primal;
 f_dual = [beq;b];
 ub_dual = [inf(meq,1);zeros(m,1)];
 
-%% solveur
-
+%% Solveur
 options = optimoptions(@linprog, 'Algorithm', 'simplex');
 [x, fval] = linprog(-f_dual, A_dual, b_dual,...
     [], [], [], ub_dual);

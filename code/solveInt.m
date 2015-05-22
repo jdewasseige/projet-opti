@@ -8,7 +8,7 @@ function [cout,X] = solveInt(d,L)
 %                      j correspond a un des types suivants
 %                      [x_normal x_suplementaire x_stock x_retard x_sst
 %                       n_ouv n_emb n_lic]
-%          - fval  : valeur du cout optimal
+%          - cout  : valeur du cout optimal
 
 
 [f,A,b,Aeq,beq,lb,ub] = getSolveInfos(d,L);

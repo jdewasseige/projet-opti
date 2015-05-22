@@ -1,6 +1,6 @@
 function toVec = getToX(L)
 
-% acceder a x_lambda
+% Acceder a x_lambda
 
 if L==5
     % avec x_s = [x_n x_sup x_stock x_retard x_sst]'
