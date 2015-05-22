@@ -20,14 +20,20 @@ Voici le code correspondant
   beq = [d.demande'];   
 \end{lstlisting}
 
-Rappelons la forme de notre vecteur $x_s$
-\[ x_s = 
-  \begin{pmatrix} 
-    \xn &\xsup &\xstock &\xretard &\xsst
-  \end{pmatrix}^T.
+L'instruction \lstinline{kron(A,B)} effectue l'opération suivante
+\[ 
+  \texttts{kron}
+    \left(
+      \begin{pmatrix} a_{1,1} & a_{1,2} \\ a_{2,1} & a_{2,2} \end{pmatrix}, 
+      \texttts{B}
+    \right)
+  =
+  \begin{pmatrix} a_{1,1} \cdot\texttts{B} & a_{1,2} \cdot\texttts{B}
+    \\ a_{2,1}\cdot\texttts{B} & a_{2,2} \cdot\texttts{B}
+  \end{pmatrix}
 \]
 
-Nous avons tout d'abord la matrice créée à la ligne $3$
+Nous avons donc tout d'abord la matrice créée à la ligne $3$
 \[
     \left(
     \begin{array}{*{15}c}
@@ -47,7 +53,15 @@ ensuite celle créée à la ligne $4$
     \right).
 \]
 
-Cela donne comme voulu
+
+Rappelons la forme de notre vecteur $x_s$
+\[ x_s = 
+  \begin{pmatrix} 
+    \xn &\xsup &\xstock &\xretard &\xsst
+  \end{pmatrix}^T.
+\]
+
+Cela donne comme voulu $A_{eq} \, x = b_{eq}$
 \[
     \left(
     \begin{array}{*{15}c}
