@@ -1,4 +1,4 @@
-function compareDuality
+function question5
 
 d = importdata('donnees.mat');
 

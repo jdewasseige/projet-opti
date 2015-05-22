@@ -1,9 +1,6 @@
 function [cout,X] = solve(d,L)
 %SOLVE - Implementation et solution du modele lineaire continu.
 
-% input    - donnees : si aucun vecteur de donnees n'est utilise en
-%                      argument, alors on utilise le fichier 'donnees.mat'
-%
 % output   - cout    : valeur du cout optimal
 %
 %          - X     : matrice de taille Tx5 ou l'element x_(i,j)

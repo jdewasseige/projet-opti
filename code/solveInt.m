@@ -2,9 +2,6 @@ function [cout,X] = solveInt(d,L)
 %SOLVEINT - Implementation et solution du modele lineaire continu
 %           avec integralite imposee a certaines variables.
 
-% input    - donnees : si aucun vecteur de donnees n'est utilise en
-%                      argument, alors on utilise le fichier 'donnees.mat'
-%
 % output   - X     : matrice de taille Tx5 ou l'element x_(i,j)
 %                      correspond au nombre de smartphones de type j
 %                      produits pendant la semaine i
