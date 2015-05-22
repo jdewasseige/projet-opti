@@ -12,7 +12,7 @@ Une première hypothèse est que tous les éléments du
 vecteur \texttt{demande} soient entiers.
 Il faut également que les constantes \texttt{stock\_initial}, \texttt{nb\_max\_sous\_traitant} et 
 \texttt{nb\_ouvriers} soient entières bien sûr, sinon cela n'aurait d'ailleurs pas de sens physique.
-Mais il est également nécessaire que \texttt{nb\_max\_heure\_sup} et $1/d_{a,h}$ soient entiers.
+Mais il est également nécessaire que \texttt{nb\_max\_heure\_sup} soit entier et que $d_{a,h}$ soit multiple de $35\cdot \texttts{nb\_ouvriers}$ et de $\texttts{nb\_max\_heure\_sup}\cdot\texttts{nb\_ouvriers}$, ce qui implique qu'il soit aussi entier.
 Notons enfin que nous supposons ces constantes positives, sans quoi notre modèle produirait des résultats aberrants,
 voire pas de résultat du tout.
 
@@ -83,9 +83,13 @@ Les capacités maximales ne sont pas dépassées
 
 On peut maintenant utiliser le théorème suivant pour conclure que, si nos hypothèses sont vérifiées, notre problème admettra au moins une solution entière.
 \paragraph{Théorème}
-Si les demandes $b_i$ et les capcités $h_{ij}$ 
+Si les demandes $b_i$ et les capacités $h_{ij}$ 
 d'un problème de flot de coût minimum sont entières alors il existe une solution optimale entière.
 \footnote{En regardant de plus près la démonstration de ce résultat,
 on note également que chaque sommet est entier. 
 Cependant, ce théorème ne nous dit \emph{pas} que \emph{toutes} 
 les solutions optimales sont entières.}
+
+Nous devons donc imposer que \texttt{stock\_initial} et tous les éléments du vecteur \texttt{demande} soient entiers afin que tous les $b_i$ le soient. Pour trouver les hypothèses relatives aux $h_{ij}$, nous procédons de la manière suivante. \texttt{nb\_ouvriers} doit être entier, sans quoi cela n'a pas de sens physique. Or, pour que $h_{0, s_1}$ soit entier, $35\cdot \texttts{nb\_ouvriers}$ doit être divisible par $d_{a,h}$, ce qui équivaut à dire que $d_{a,h}$ est multiple de $35\cdot \texttts{nb\_ouvriers}$. On en conclut aussi que $d_{a,h}$ est entier. Nous raisonnons de la même manière pour $h_{0, s_2}$ et trouvons que $d_{a,h}$ doit également être multiple de $\texttts{nb\_max\_heure\_sup}\cdot\texttts{nb\_ouvriers}$. On en déduit que \texttt{nb\_max\_heure\_sup} est lui aussi entier. Enfin, \texttt{nb\_max\_sous\_traitant} doit lui aussi être entier.
+
+On note que les deux hypthèses ``$d_{a,h}$ est multiple de \dots'' seront satisfaites si \texttt{nb\_ouvriers} est multiple de $d_{a,h}$ (ou même encore plus simplement si $1/d_{a,h}$ est entier). Mais il faut être attentif au fait que cette condition, bien que suffisante, n'est \emph{pas nécessaire}. En effet, on peut considérer l'exemple où $\texttts{nb\_ouvriers} = 1$, $d_{a,h}=5$ et $\texttts{nb\_max\_heure\_sup} = 10$. Les hypothèses sont alors remplies sans que \texttt{nb\_ouvriers} ne soit multiple de $d_{a,h}$ (et sans que $1/d_{a,h}$ ne soit entier).
