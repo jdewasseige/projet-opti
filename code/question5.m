@@ -1,12 +1,20 @@
-function question5
+function question5(donnees)
+%QUESTION5 - Affiche les graphes de comparaison d'erreur et d'efficacite
+%            primal-dual.
 
-d = importdata('donnees.mat');
+% input    - donnees : si aucun vecteur de donnees n'est utilise en
+%                      argument, alors on utilise le fichier 'donnees.mat'
+
+if nargin==0
+    d = importdata('donnees.mat');
+else
+    d = donnees;
+end
 
 %close all;
 
 compareDualitySpeed;
 compareDualityValues;
-
 
 %% compare couts
     function compareDualityValues
