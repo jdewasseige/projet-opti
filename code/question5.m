@@ -43,7 +43,7 @@ compareDualityValues;
 
         figure
         plot(nValues,nP,'.-r',nValues,nD,'.-b');
-        xlabel('taille de epsilon');
+        xlabel('Nombre de perturbations differentes etudiees');
         ylabel('CPU time');
         legend('primal','dual');
         title('Computational efficiency'); hold off;

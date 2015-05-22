@@ -26,7 +26,7 @@ L = 5;
 cout = cout - d.stock_initial*d.cout_stockage ...
     + d.T*35*d.nb_ouvriers*d.cout_horaire ;
 
-printSol(cout,X,L);
+%printSol(cout,X,L);
 
 
 end

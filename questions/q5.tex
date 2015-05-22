@@ -6,16 +6,14 @@ et ce pour un échantillon de valeurs du paramètre \texttt{epsilon} comprises
 entre $0$ et $1$ (par exemple \texttt{0:.1:1}).
 Commentez (éventuellement en vous aidant d'un graphique).}
 
-Comparaison À FAIRE.
-
 Notre fonction \texttt{question5.m} permet de prouver l'efficacité
 du problème dual lorsqu'on perturbe le vecteur des contraintes
 ainsi que de comparer la différence de comportement entre le dual
 et le primal en réponse à la pertubation.
 
 En effet, si l'on décide d'analyser via le problème primal ce qu'il
-se passe lorsque les contraintes sont modifiées, il est nécessaire de
-résoudre le problème à chaque perturbation
+se passe lorsque les contraintes sont modifiées pour plusieurs valeurs de \texttt{epsilon}, il est nécessaire de
+résoudre le problème pour chaque perturbation
 (plusieurs appels à \texttt{linprog}).
 Tandis que pour le problème dual,
 il suffit d'effectuer plusieurs combinaisons linéaires de la fonction objectif
@@ -32,8 +30,7 @@ C'est ce que nous obtenons en implémentant ces deux méthodes, comme représent
   \begin{center}
     \includegraphics[scale=0.6]{img/responseToPerturbations.eps}
     \caption{Comparaison de la réponse aux perturbations du primal
-    et dual. On remarque que les valeurs restent égales jusqu'à
-    $\epsilon \approx 0.6$.}
+    et dual. On remarque que les valeurs restent égales jusqu'à \texttt{epsilon} $\approx 0.6$.}
     \label{fig:responseToPerturbations}
   \end{center}
 \end{figure}
@@ -42,7 +39,7 @@ C'est ce que nous obtenons en implémentant ces deux méthodes, comme représent
   \begin{center}
     \includegraphics[scale=0.6]{img/efficiencyDual.eps}
     \caption{Comparaison de l'efficacité du primal et dual lors de
-    l'analyse de perturbations sur les contraintes.}
+    l'analyse de plusieurs perturbations sur les contraintes, c'est-à-dire plusieurs valeurs de \texttt{epsilon}.}
     \label{fig:efficiencyDual}
   \end{center}
 \end{figure}
