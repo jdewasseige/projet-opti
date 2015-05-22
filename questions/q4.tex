@@ -15,15 +15,15 @@ d'une petite variation de la demande prévue.
 En effet, notre problème peut être simplifié sous la forme
 \begin{align*}
 	\text{minimiser } c^T x \\
-	a_i^T x &= b_i  & i = 1,...,T,...,T+7 \\
-  a_i^T x &\leq b_i & i = T+8,...,end \\
+	a_i^T x &= b_i  & i = 1,...,T+2 \\
+  a_i^T x &\leq b_i & i = T+3,...,\myEnd \\
 	x_j &\geq 0 & \forall j
 \end{align*}
 On obtient ensuite sa forme duale
 \begin{align*}
 	\text{maximiser } b^T y \\
-	y_i &\text{ libre} & i = 1,...,T,...,T+7 \\
-  y_i &\leq 0 & i = T+8,...,end \\
+	y_i &\text{ libre} & i = 1,...,T+2 \\
+  y_i &\leq 0 & i = T+3,...,\myEnd \\
   A_j^T y &\leq c_j & \forall j
 \end{align*}
 
@@ -35,9 +35,9 @@ Il nous suffit donc simplement de calculer une solution optimale du dual $y^{*}$
 puis d'effectuer le produit scalaire
 \[ \Delta z^{*} = (\Delta b)^T y^{*} \]
 pour chaque perturbation $\Delta b$ pour conna\^itre l'impact $\Delta z^{*}$
-sur le cout.
+sur le coût.
 
-Ce résultat n'est valable que pour des petites variations de b.
+Ce résultat n'est valable que pour des petites variations de $b$.
 En effet, pour l'obtenir, il faut supposer que l'on connaît un sommet optimal admissible.
 Or, en changeant le problème, il n'est pas garanti que ce sommet reste optimal et admissible.
 Plus la perturbation est importante, plus il y a de chances que notre sommet optimal change.
