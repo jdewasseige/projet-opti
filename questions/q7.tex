@@ -16,12 +16,12 @@ par semaine pour modéliser le problème :
 
 Dans la fonction objectif, il faut maintenant tenir compte du coût de
 ces recrutements et ces licenciements
-ainsi que du coût du salaire des ouvriers, non constant.
+ainsi que du coût du salaire des ouvriers, à présent non constant.
 
 En ce qui concerne les contraintes, il faut modifier celles sur
-le nombre de smartphones maximum produits dans l'entreprise.
-Il faut également ajouter les contraintes correspondants
-au nombre d'ouvriers (maximum et minimum).
+le nombre de smartphones maximal produits dans l'entreprise.
+Il faut également ajouter les contraintes correspondant
+au nombre d'ouvriers (minimal et maximal).
 
 \subsection*{Fonction objectif}
 \begin{align*}
@@ -60,16 +60,11 @@ Voici les contraintes du problème de la planification
 de la ligne d’assemblage à personnel variable.
 \begin{align*}
   \Delta\xstock + \texttts{demande}(s) &= \xn + \xsup
-  + \xretard + \xsst - \myX{s-1}{retard} &\forall s \\
+   + \xsst + \Delta \xretard &\forall s \\
   \Delta\nouv &= \nemb - \nlic &\forall s \\
-  \myX{0}{n}&= 0 \\
-  \myX{0}{sup}&= 0 \\
   \myX{0}{stock}&= \texttts{stock\_initial} \\
   \myX{0}{retard}&= 0 \\
-  \myX{0}{sst}&= 0 \\
   \myN{0}{ouv}&= \texttts{nb\_ouvriers} \\
-  \myN{0}{emb}&= 0 \\
-  \myN{0}{lic}&= 0 \\
   \myX{T}{stock}&= \texttts{stock\_initial} \\
   \myX{T}{retard}&= 0 \\
   \myX{s-1}{retard} + \Delta\xstock &\leq \xn + \xsup + \xsst &\forall s \\
@@ -79,5 +74,5 @@ de la ligne d’assemblage à personnel variable.
   &\forall s \\
   \xsst &\leq \texttts{nb\_max\_sous\_traitant} &\forall s \\
   \nouv &\leq \texttts{nb\_max\_ouvriers}  &\forall s \\
-  x_s, n_s&\geq 0 &\forall s
+  x_{s,\lambda}, n_{s,\lambda}&\geq 0 &\forall s, \lambda
 \end{align*}
