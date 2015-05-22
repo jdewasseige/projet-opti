@@ -1,7 +1,8 @@
 function [cout,X] = question9(donnees)
 %QUESTION8 - Implementation et solution du modele lineaire continu de 
-%            la ligne d'assemblage personnel constant.
-
+%            la ligne d'assemblage personnel constant. En plus de renvoyer
+%            les resultats, cette fonction les affiche.
+%
 % input    - donnees : si aucun vecteur de donnees n'est utilise en
 %                      argument, alors on utilise le fichier 'donnees.mat'
 %

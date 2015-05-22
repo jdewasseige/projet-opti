@@ -1,7 +1,7 @@
 function question5(donnees)
 %QUESTION5 - Affiche les graphes de comparaison d'erreur et d'efficacite
 %            primal-dual.
-
+%
 % input    - donnees : si aucun vecteur de donnees n'est utilise en
 %                      argument, alors on utilise le fichier 'donnees.mat'
 

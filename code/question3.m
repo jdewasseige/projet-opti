@@ -1,7 +1,8 @@
 function [cout,X] = question3(donnees)
 %QUESTION3 - Implementation et solution du modele lineaire continu de 
-%            la ligne d'assemblage personnel constant.
-
+%            la ligne d'assemblage personnel constant. En plus de renvoyer
+%            les resultats, cette fonction les affiche.
+%
 % input    - donnees : si aucun vecteur de donnees n'est utilise en
 %                      argument, alors on utilise le fichier 'donnees.mat'
 %
@@ -26,7 +27,6 @@ L = 5;
 cout = cout - d.stock_initial*d.cout_stockage ...
     + d.T*35*d.nb_ouvriers*d.cout_horaire ;
 
-%printSol(cout,X,L);
-
+printSol(cout,X,L);
 
 end
