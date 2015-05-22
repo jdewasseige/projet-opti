@@ -8,7 +8,7 @@ heure\textunderscore sup} standard), chaque heure supplémentaire
 à celui de l'heure supplémentaire précédente.
 Est-il toujours possible de formuler (ou reformuler)
 le problème sous forme linéaire ? Expliquez.
-Et que se passerait-il si le coût horaire des supplémentaires \emph{diminuait}
+Et que se passerait-il si le coût horaire des heures supplémentaires \emph{diminuait}
 lorsque le nombre d'heures prestées augmente ? Justifiez.}
 
 Si le coût des heures supplémentaires n'est plus constant mais augmente au fur et à mesure de leur utilisation,
@@ -25,21 +25,20 @@ En effet, on peut réécrire notre fonction objectif comme
 avec
 \[
   \mathcal{C}_{hs} (\xsup) = \texttts{cout\_heure\_sup} \cdot
-  \sum_{i=0}^{\alpha} \binom{\alpha}{i} (0.05)^{i}
+  \sum_{i=0}^{\alpha-1}  (1.05)^{i}
 \]
-Par soucis de lisibilité, on a posé
-\[ \alpha = \xsup \, d_{a,h} - 1 \]
-$\alpha$ correspond donc au nombre d'heures supplémentaires qui auront
-un cout différent de \texttt{cout\_heure\_sup}.
+Par souci de lisibilité, on a posé
+\[ \alpha = \lceil \xsup \, d_{a,h} \rceil \]
+$\alpha$ correspond donc au nombre d'heures supplémentaires nécessaires à la production de $\xsup$ smartphones pendant celles-ci, arrondi à l'entier supérieur.
 
 On remarque immédiatement que la fonction $\mathcal{C}_{hs}$
-est \emph{non-linéaire} en $\xsup$ puisque
-\[ \binom{\alpha}{i} =\frac{\alpha !}{i!\,(\alpha-i)!} \]
+est \emph{non-linéaire} en $\xsup$ puisque $\alpha$ apparaîtra en exposant, et donc $\xsup$ aussi.
 
 De même, si le coût des heures supplémentaires \emph{diminuait}
 avec un taux de $0.05$,
 on aurait
 \[
-  c_{hs} (\xsup) = \texttts{cout\_heure\_sup} \cdot
-  \sum_{i=0}^{\alpha} (-1)^i(0.05)^{i} \,   \binom{\alpha}{i}
+  \mathcal{C}_{hs} (\xsup) = \texttts{cout\_heure\_sup} \cdot
+  \sum_{i=0}^{\alpha-1}  (0.95)^{i}.
 \]
+Dans les deux cas, il n'est donc plus possible de formuler le problème sous forme linéaire.
