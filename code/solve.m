@@ -8,7 +8,7 @@ function [cout,X] = solve(d,L)
 %                      correspond au nombre de smartphones de type j
 %                      produits pendant la semaine i
 %                      j correspond a un des types suivants
-%                      [x_normal x_suplementaire x_stock x_retard x_sst]
+%                      [x_normal x_supplementaire x_stock x_retard x_sst]
 %          - fval  : valeur du cout optimal
 
 
