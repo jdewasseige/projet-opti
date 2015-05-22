@@ -9,14 +9,14 @@ voici son application pour la contrainte
   \Delta\xstock + \texttts{demande}(s) = \xn + \xsup 
   + \xretard + \xsst - \myX{s-1}{retard} \qquad \forall s
 \]
-pour une planification sur deux semaines ($T=2$).
+pour une planification sur deux semaines ($\texttt{d.T}=2$).
 
 Voici le code correspondant
 \begin{lstlisting}
   dSeg   = [1 1 -1 1 1];
   dpSeg  = [0 0 1 -1 0];
-  Aeq = [kron([eye(T),zeros(T,1)],dpSeg) ...
-       + kron([zeros(T,1),eye(T)],dSeg)];
+  Aeq = [kron([eye(d.T),zeros(d.T,1)],dpSeg) ...
+       + kron([zeros(d.T,1),eye(d.T)],dSeg)];
   beq = [d.demande'];   
 \end{lstlisting}
 
