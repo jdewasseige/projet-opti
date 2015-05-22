@@ -20,12 +20,12 @@ résoudre le problème à chaque perturbation
 Tandis que pour le problème dual,
 il suffit d'effectuer plusieurs combinaisons linéaires de la fonction objectif
 avec \emph{une seule} solution $y^{*}$
-(c'est-à-dire un apppel à \texttt{linprog}).
+(c'est-à-dire un seul appel à \texttt{linprog}).
 On retrouve les résultats des tests d'efficacité
 sur le graphe de la figure~\ref{fig:efficiencyDual}.
 
 Cependant, comme expliqué dans la section précédente, ce résultat n'est valable que pour des petites variations des contraintes.
-Si \texttt{epsilon} devient trop grand, l'analyse par le primal pourrait diverger de la solution du primal.
+Si \texttt{epsilon} devient trop grand, l'analyse par le dual pourrait diverger de la solution du primal.
 C'est ce que nous obtenons en implémentant ces deux méthodes, comme représenté à la figure \ref{fig:responseToPerturbations}
 
 \begin{figure}
