@@ -4,10 +4,8 @@ d = importdata('donnees.mat');
 
 %close all;
 
-
-
 compareDualitySpeed;
-compareDualityValues
+compareDualityValues;
 
 
 %% compare couts
@@ -68,7 +66,7 @@ compareDualityValues
     function couts = multipleDual(n,epsilon)
         couts = zeros(n,1);
 
-        [cout,x_dual,f_dual] = getDualInfos(d);
+        [~,x_dual,f_dual] = getDualInfos(d);
         newObj = f_dual;
     
         for i=1:n

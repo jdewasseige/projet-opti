@@ -1,4 +1,4 @@
-function f = getObjectif(T,d,L)
+function f = getObjectif(d,L)
 
 c = [d.cout_materiaux ;...
     d.cout_materiaux+d.duree_assemblage/60*d.cout_heure_sup ; ...
@@ -10,6 +10,6 @@ if L==8
         d.cout_licenciement];
 end
 
-f = repmat(c,T+1,1);
+f = repmat(c,d.T+1,1);
 
 end

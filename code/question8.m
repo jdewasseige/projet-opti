@@ -27,6 +27,6 @@ L = 8;
 cout = cout - 35*d.nb_ouvriers*d.cout_horaire ...
     - d.stock_initial*d.cout_stockage ;
 
-%printSol(cout,X,L);
+printSol(cout,X,L);
 
 end

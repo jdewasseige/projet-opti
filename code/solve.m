@@ -4,12 +4,11 @@ function [cout,X] = solve(d,L)
 % input    - donnees : si aucun vecteur de donnees n'est utilise en
 %                      argument, alors on utilise le fichier 'donnees.mat'
 %
-% output   - X     : matrice de taille Tx5 ou l'element x_(i,j)
-%                      correspond au nombre de smartphones de type j
-%                      produits pendant la semaine i
-%                      j correspond a un des types suivants
-%                      [x_normal x_supplementaire x_stock x_retard x_sst]
-%          - fval  : valeur du cout optimal
+% output   - cout    : valeur du cout optimal
+%
+%          - X     : matrice de taille Tx5 ou l'element x_(i,j)
+%                    correspond au nombre de smartphones de type j
+%                    produits pendant la semaine i
 
 
 [f,A,b,Aeq,beq,lb,ub] = getSolveInfos(d,L);

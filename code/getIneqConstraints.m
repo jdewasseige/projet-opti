@@ -1,4 +1,4 @@
-function [A,b] = getIneqConstraints(T,d,L)
+function [A,b] = getIneqConstraints(d,L)
 
 to = getToX(L);
 
@@ -11,10 +11,10 @@ if L==5 % personnel constant
     dSineg  = [-1 -1 1 0 -1]; 
     dpSineg = [0  0 -1 1  0];
     
-    Anor = kron([zeros(T,1),eye(T)],to.Nor);
-    bnor = repmat(35*c_ouvriers,T,1);
-    Asup = kron([zeros(T,1),eye(T)],to.Sup);
-    bsup = repmat(d.nb_max_heure_sup*c_ouvriers,T,1);
+    Anor = kron([zeros(d.T,1),eye(d.T)],to.Nor);
+    bnor = repmat(35*c_ouvriers,d.T,1);
+    Asup = kron([zeros(d.T,1),eye(d.T)],to.Sup);
+    bsup = repmat(d.nb_max_heure_sup*c_ouvriers,d.T,1);
 
 else % personnel variable
 
@@ -24,25 +24,25 @@ else % personnel variable
 
     % matrice supplementaire pour acceder a
     % [n_ouv n_emb -n_lic] pour chaque semaine
-    A_personnel_v = kron([zeros(T,1),eye(T)], to.Ouv);
+    A_personnel_v = kron([zeros(d.T,1),eye(d.T)], to.Ouv);
 
-    Anor = [kron([zeros(T,1),eye(T)],to.Nor)-35/d_ah*A_personnel_v] ;
-    bnor = zeros(T,1);
+    Anor = [kron([zeros(d.T,1),eye(d.T)],to.Nor)-35/d_ah*A_personnel_v] ;
+    bnor = zeros(d.T,1);
 
-    Asup = [kron([zeros(T,1),eye(T)],to.Sup)-d.nb_max_heure_sup/d_ah*A_personnel_v];
-    bsup = zeros(T,1);
+    Asup = [kron([zeros(d.T,1),eye(d.T)],to.Sup)-d.nb_max_heure_sup/d_ah*A_personnel_v];
+    bsup = zeros(d.T,1);
 
-    Aouv = kron([zeros(T,1),eye(T)],to.Ouv);
-    bouv = repmat(d.nb_max_ouvriers,T,1);
+    Aouv = kron([zeros(d.T,1),eye(d.T)],to.Ouv);
+    bouv = repmat(d.nb_max_ouvriers,d.T,1);
 
 end
 
-Asst = kron([zeros(T,1),eye(T)],to.Sst);
-bsst = repmat(d.nb_max_sous_traitant,T,1);
+Asst = kron([zeros(d.T,1),eye(d.T)],to.Sst);
+bsst = repmat(d.nb_max_sous_traitant,d.T,1);
 
-A = [kron([eye(T),zeros(T,1)],dpSineg) + kron([zeros(T,1),eye(T)],dSineg);...
+A = [kron([eye(d.T),zeros(d.T,1)],dpSineg) + kron([zeros(d.T,1),eye(d.T)],dSineg);...
     Anor; Asup; Asst];
-b = [zeros(T,1);bnor;bsup;bsst];
+b = [zeros(d.T,1);bnor;bsup;bsst];
 
 
 if L==8
